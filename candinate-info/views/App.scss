@@ -1,0 +1,22 @@
+.App {
+    max-width: 1200px;
+    margin: auto;
+    .App-header {
+        display:flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.search-container {
+    margin: 40px 0;
+    display:flex;
+    label {
+        flex-basis: 200px;
+        display: flex;
+        align-items: center;
+    }
+    .form-control {
+        height: 46px;
+    }
+}
