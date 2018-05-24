@@ -23,12 +23,19 @@ export default class candinateInfoList extends Component {
     render() {
         const {data, searchKey} = this.props;
 
-        const candinateNodes = data.map((candinate, index) => {
+        let candinateNodes = data;
+
+        if(searchKey) {
+            candinateNodes = data.filter((candinate, index) => {
+                return candinate.firstname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || candinate.lastname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
+            })
+        }   
+
+
+        candinateNodes = candinateNodes && candinateNodes.map((candinate, index) => {
             const candinateID = candinate._id;
             return (
                 <div  key={index}>
-                    {
-                        !searchKey && 
                         <div className="candinate-colum panel">
                             <div>
                                 <p>Name: {candinate.firstname} {candinate.lastname}</p>
@@ -38,11 +45,8 @@ export default class candinateInfoList extends Component {
                                 <button className="btn-update" onClick={(e)=>this.handleUpdate(e, candinateID)}>Update</button>
                                 <button className="btn-delete" onClick={(e)=>this.handleDelete(e, candinateID,candinate)}>delete</button>
                             </div>
-                        </div>
-                    }
-                    
-                </div>
-                    
+                        </div>                    
+                </div>                
                 
             )
         })
@@ -50,12 +54,12 @@ export default class candinateInfoList extends Component {
         return (
 
             <div className="candinate-list">
-                                {
-                                    candinateNodes.length > 0
-                                    && candinateNodes 
-                                }                                
-                                { candinateNodes.length === 0 && "No records available"}
-                    </div>
+                {
+                    candinateNodes.length > 0
+                    && candinateNodes 
+                }                                
+                { candinateNodes.length === 0 && "No records available"}
+            </div>
         )
     }
 }
