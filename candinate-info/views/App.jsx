@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import CandinateForm from './CandinateForm';
 import CandinateInfoList from './CandinateInfoList';
+import './App.scss';
+import { Modal,Button } from 'react-bootstrap';
+import InputBox from './InputBox'
+
 
 import axios from 'axios';
 
@@ -8,11 +12,14 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { data: [] };
+        this.state = { data: [], show: false, searchKey:"" };
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         this.loadDetailsFromServer = this.loadDetailsFromServer.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);        
     }
     loadDetailsFromServer() {
         axios.get(this.props.url)
@@ -22,15 +29,17 @@ class App extends Component {
     }
 
     handleSubmit(record) {
-        let records = this.state.data;
-        console.log(this.state.data);
-        let newCandinate = records.concat([record]);
-        this.setState({ data: newCandinate });
-        axios.post(this.props.url+'/newCandinate', record)
-            .catch(err => {
-                console.error(err);
-                this.setState({ data: records });
-            });
+        if(record) {
+            let records = this.state.data;
+            this.setState({ show: false });
+            let newCandinate = records.concat([record]);
+            this.setState({ data: newCandinate });
+            axios.post(this.props.url+'/newCandinate', record)
+                .catch(err => {
+                    console.error(err);
+                    this.setState({ data: records });
+                });
+        }
     }
 
     handleDelete(id) {
@@ -62,18 +71,64 @@ class App extends Component {
         setInterval(this.loadTodosFromServer, this.props.pollInterval);
     }
 
+ 
+    handleClose() {
+        this.setState({ show: false });
+    }
+
+    handleShow() {
+        this.setState({ show: true });
+    }
+
+    handleSearch(e) {
+        this.setState({searchKey:e.target.value})
+    }
+    
 
    render() {
+    const {data, searchKey} = this.state;
+
     return (
       <div className="App">
         <div className="App-header">
+            <div className="">
+                <h1> Candinate Details </h1> 
+            </div>
+            <div>
+                <Button bsStyle="primary" bsSize="large" onClick={this.handleShow}>
+                    Add New Candidate
+                </Button>
+            </div>
         </div>
-            <CandinateForm  onHandleSubmit={ this.handleSubmit }/>
-            <CandinateInfoList
-              onDelete={ this.handleDelete }
-              onUpdate={ this.handleUpdate }
-              data={ this.state.data }/>   
+        <div className="search-container">
+            <label className="control-label">Candinate Search:</label>  
+            <InputBox
+                type="text"
+                placeholder="Search..."
+                classname="form-control"
+                onChange={this.handleSearch}
+            />
+        </div>
+            
 
+        <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Candidate Form</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <CandinateForm  onHandleSubmit={ this.handleSubmit }/>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={this.handleClose}>Close</Button>
+            </Modal.Footer>
+        </Modal>
+
+
+        <CandinateInfoList
+            onDelete={ this.handleDelete }
+            onUpdate={ this.handleUpdate }
+            data={ data }
+            searchKey= { searchKey }/>
       </div>
     );
   }

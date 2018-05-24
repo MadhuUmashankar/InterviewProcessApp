@@ -1,5 +1,6 @@
 import React from "react";
 import './CandinateForm.scss';
+import InputBox from './InputBox'
 
 export default class CandinateForm extends React.Component{
     constructor(props) {
@@ -12,42 +13,38 @@ export default class CandinateForm extends React.Component{
             phone: '',
             city: ''
         };
-        this.handleFirstName = this.handleFirstName.bind(this);
-        this.handleLastName = this.handleLastName.bind(this);
-        this.handlekeySkills = this.handlekeySkills.bind(this);
-        this.handleEmail = this.handleEmail.bind(this);
-        this.handlePhone = this.handlePhone.bind(this);
-        this.handleCity = this.handleCity.bind(this);
+        this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleFirstName(event) {
-        this.setState({firstname : event.target.value})
+    handleOnChange(event) {
+        switch (event.target.name) {
+            case "firstname":
+                this.setState({firstname : event.target.value})
+                break;
+            case "lastname":
+                this.setState({lastname : event.target.value})
+                break;
+            case "email":
+                this.setState({email : event.target.value})
+                break;
+            case "phone":
+                this.setState({phone : event.target.value})
+                break;
+            case "city":
+                this.setState({city : event.target.value})
+                break;
+            case "skills":
+                this.setState({skills : event.target.value})
+                break;
+        
+            default:
+                break;
+        }
     }
     
-    handleLastName(event) {
-        this.setState({lastname : event.target.value})
-    }
-    
-    handleEmail(event) {
-        this.setState({email : event.target.value})
-    }
-
-    handlePhone(event) {
-        this.setState({phone : event.target.value})
-    }
-
-    handleCity(event) {
-        this.setState({city : event.target.value})
-    }
-
-    handlekeySkills(event) {
-        this.setState({skills : event.target.value})
-    }
-
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state);
         const {firstname, lastname, skills, email, phone, city} = this.state;
         const {onHandleSubmit} = this.props;
 
@@ -62,32 +59,42 @@ export default class CandinateForm extends React.Component{
         return(        
         
             
-            <div className="container">
+            <div className="form-container">
                     <form className="form-horizontal" id="contact_form" onSubmit={ this.handleSubmit }>
                         <fieldset className = "background">
                             <div className="form-group">
-                                <label className="col-md-4 control-label"><h1>Candidate Form</h1></label>  
-                            </div>
-                           
-
-                            <div className="form-group">
                                 <label className="col-md-4 control-label">First Name</label>  
-                                <div className="col-md-4 inputGroupContainer">
+                                <div className="col-md-6 inputGroupContainer">
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                                        <input  name="firstname" placeholder="First Name" className="form-control"  type="text" value = {this.state.firstname} 
-                                        onChange = {this.handleFirstName} autoFocus="true" required />
+                                        <InputBox
+                                            type="text"
+                                            placeholder="First Name"
+                                            classname="form-control"
+                                            name="firstname"
+                                            value = {this.state.firstname}
+                                            autoFocus="true"
+                                            required
+                                            onChange = {this.handleOnChange}
+                                        />
                                     </div>
                                 </div>
                             </div>
 
                             <div className="form-group">
                                 <label className="col-md-4 control-label" >Last Name</label> 
-                                    <div className="col-md-4 inputGroupContainer">
+                                    <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
-                                            <input name="lastname" placeholder="Last Name" className="form-control"  type="text" value = {this.state.lastname} 
-                                                    onChange = {this.handleLastName} required />
+                                            <InputBox
+                                                type="text"
+                                                placeholder="Last Name"
+                                                classname="form-control"
+                                                name="lastname"
+                                                value = {this.state.lastname}
+                                                required
+                                                onChange = {this.handleOnChange}
+                                            />
                                          </div>
                                 </div>
                             </div>
@@ -95,41 +102,71 @@ export default class CandinateForm extends React.Component{
 
                             <div className="form-group">
                                 <label className="col-md-4 control-label">E-Mail</label>  
-                                    <div className="col-md-4 inputGroupContainer">
+                                    <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-envelope"></i></span>
-                                            <input name="email" placeholder="E-Mail Address" className="form-control"  type="text" onChange = {this.handleEmail} required />
+                                            <InputBox
+                                                type="email"
+                                                placeholder="E-Mail Address"
+                                                classname="form-control"
+                                                name="email"
+                                                value = {this.state.email}
+                                                required
+                                                onChange = {this.handleOnChange}
+                                            />
                                         </div>
                                 </div>
                             </div>
 
                             <div className="form-group">
                                 <label className="col-md-4 control-label">Phone #</label>  
-                                    <div className="col-md-4 inputGroupContainer">
+                                    <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-earphone"></i></span>
-                                            <input name="phone" placeholder="(91)12345-67890" className="form-control" type="text" onChange = {this.handlePhone}/>
+                                            <InputBox
+                                                type="text"
+                                                placeholder="(91)12345-67890"
+                                                classname="form-control"
+                                                name="phone"
+                                                value = {this.state.phone}
+                                                onChange = {this.handleOnChange}
+                                            />
                                         </div>
                                 </div>
                             </div>
 
                             <div className="form-group">
                                 <label className="col-md-4 control-label">City</label>  
-                                    <div className="col-md-4 inputGroupContainer">
+                                    <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-home"></i></span>
-                                            <input name="city" placeholder="city" className="form-control"  type="text" onChange = {this.handleCity}/>
+                                            <InputBox
+                                                type="text"
+                                                placeholder="city"
+                                                classname="form-control"
+                                                name="city"
+                                                value = {this.state.city}
+                                                required
+                                                onChange = {this.handleOnChange}
+                                            />
                                         </div>
                                     </div>
                             </div>
 
                               <div className="form-group">
                                 <label className="col-md-4 control-label">Key Skills</label>  
-                                    <div className="col-md-4 inputGroupContainer">
+                                    <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-home"></i></span>
-                                            <input name="key skills" placeholder="key skills" className="form-control"  type="text" value = {this.state.skills}
-                                            onChange = {this.handlekeySkills} autoFocus="true" required />
+                                            <InputBox
+                                                type="text"
+                                                placeholder="key skills"
+                                                classname="form-control"
+                                                name="skills"
+                                                value = {this.state.skills}
+                                                required
+                                                onChange = {this.handleOnChange}
+                                            />
                                         </div>
                                     </div>
                             </div>
@@ -137,7 +174,7 @@ export default class CandinateForm extends React.Component{
                             
                             <div className="form-group">
                                 <label className="col-md-4 control-label">Upload Resume</label>
-                                <div className="col-md-4 inputGroupContainer">
+                                <div className="col-md-6 inputGroupContainer">
                                     <div className="input-group">
                                         <input type="file" className="form-control-file" id="exampleFormControlFile1"/>
                                     </div>
@@ -147,7 +184,7 @@ export default class CandinateForm extends React.Component{
 
                             <div className="form-group">
                                 <label className="col-md-4 control-label"></label>
-                                    <div className="col-md-4">
+                                    <div className="col-md-6">
                                         <button className="btn btn-info">Submit<span className="glyphicon glyphicon-send"></span></button>
                                      </div>
                             </div>
