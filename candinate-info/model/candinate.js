@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 //mode/todo.js
 'use strict';
 //import dependency
@@ -17,7 +16,7 @@ var CandinateSchema = new Schema({
 });
 
 //export our module to use in server.js
-=======
+
 //mode/todo.js
 'use strict';
 //import dependency
@@ -36,5 +35,5 @@ var CandinateSchema = new Schema({
 });
 
 //export our module to use in server.js
->>>>>>> 816af9a91306e1702b527aaf7ae7488f5d282900
+
 module.exports = mongoose.model('candinateInformationTables', CandinateSchema);

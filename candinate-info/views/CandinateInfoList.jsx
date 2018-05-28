@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './CandinateInfoList.scss';
 import CandinateForm from './CandinateForm';
+import Evaluation from './Evaluation';
 
 export default class candinateInfoList extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ export default class candinateInfoList extends Component {
     }
 
 
-    
+
 
     render() {
         const {data, searchKey} = this.props;
@@ -28,22 +29,36 @@ export default class candinateInfoList extends Component {
             return (
                 <div  key={index}>
                     {
-                        !searchKey && 
+                        !searchKey &&
                         <div className="candinate-colum panel">
                             <div>
                                 <p>Name: {candinate.firstname} {candinate.lastname}</p>
                                 <p>Skills: {candinate.skills}</p>
                             </div>
+                            <div className="candidate-ia-form">
+                                <Evaluation />
+                            </div>
+                            <div className="status-class">
+                              <select className="form-control" id="Jun">
+                                <option>Select</option>
+                                  <option>Selected</option>
+                                  <option>Rejected</option>
+                                  <option>On Hold</option>
+                                  <option>Move to Technical Round 2</option>
+                                  <option>Move to HR Round</option>
+                                  <option>Move to Manager Round</option>
+                                </select>
+                            </div>
                             <div>
-                                <button className="btn-update" onClick={(e)=>this.handleUpdate(e, candinateID)}>Update</button>
+                                <button className="btn-update list-modify-btn" onClick={(e)=>this.handleUpdate(e, candinateID)}>Update</button>
                                 <button className="btn-delete" onClick={(e)=>this.handleDelete(e, candinateID,candinate)}>delete</button>
                             </div>
                         </div>
                     }
-                    
+
                 </div>
-                    
-                
+
+
             )
         })
 
@@ -52,8 +67,8 @@ export default class candinateInfoList extends Component {
             <div className="candinate-list">
                                 {
                                     candinateNodes.length > 0
-                                    && candinateNodes 
-                                }                                
+                                    && candinateNodes
+                                }
                                 { candinateNodes.length === 0 && "No records available"}
                     </div>
         )

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongojs = require('mongojs');
-var db = mongojs('mongodb://localhost:27017/candinateInformationTable', ['candinateInformationTables']);
+var db = mongojs('mongodb://localhost:27017/candinateInformationTable', ['candinateInformationTables', 'evaluationSheetInformationTables']);
 
 // Get All Candinate Info
 router.get('/candinateInfo', function(req, res, next){
@@ -10,6 +10,16 @@ router.get('/candinateInfo', function(req, res, next){
             res.send(err);
         }
         res.json(candinateInformationTables);
+    });
+});
+
+// Get All IA Info
+router.get('/newIAForm', function(req, res, next){
+    db.evaluationSheetInformationTables.find(function(err, evaluationSheetInformationTables){
+        if(err){
+            res.send(err);
+        }
+        res.json(evaluationSheetInformationTables);
     });
 });
 
@@ -26,7 +36,7 @@ router.get('/candinateInfo/:id', function(req, res, next){
 //Save Candinate Info
 router.post('/candinateInfo/newCandinate', function(req, res, next){
     var candinate = req.body;
-    //console.log(req.body);    
+    //console.log(req.body);
     if(!candinate.firstname || !(candinate.lastname + '')){
         res.status(400);
         res.json({
@@ -76,6 +86,25 @@ router.put('/candinateInfo/:id', function(req, res, next){
                 res.send(err);
             }
             res.json(candinate);
+        });
+    }
+});
+
+//Save IA Form Details Values
+router.post('/newIAForm', function(req, res, next){
+    var evaluator = req.body;
+    console.log('inside axios',req.body);
+    if(!evaluator.candidateName){
+        res.status(400);
+        res.json({
+            "error": "Bad Data"
+        });
+    } else {
+        db.evaluationSheetInformationTables.save(evaluator, function(err, evaluator){
+            if(err){
+                res.send(err);
+            }
+            res.json(evaluator);
         });
     }
 });
