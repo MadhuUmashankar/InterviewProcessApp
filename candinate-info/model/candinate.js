@@ -16,6 +16,7 @@ var CandinateSchema = new Schema({
 });
 
 //export our module to use in server.js
+<<<<<<< HEAD
 
 //mode/todo.js
 'use strict';
@@ -37,3 +38,6 @@ var CandinateSchema = new Schema({
 //export our module to use in server.js
 
 module.exports = mongoose.model('candinateInformationTables', CandinateSchema);
+=======
+module.exports = mongoose.model('candinateInformationTables', CandinateSchema);
+>>>>>>> 75d9df8fcaa04fcfa4c5043dc6da430aaa3b5b8f
