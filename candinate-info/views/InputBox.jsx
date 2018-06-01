@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class InputBox extends Component {
     constructor(props) {
         super(props);
-        this.state = { value: ''};
+        this.state = { value: props.value};
         this.OnHandleChange = this.OnHandleChange.bind(this);
     }
 

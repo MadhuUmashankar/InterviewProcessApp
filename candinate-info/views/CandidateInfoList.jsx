@@ -35,7 +35,8 @@ export default class CandidateInfoList extends Component {
 
         if(searchKey) {
             candidateNodes = data.filter((candidate, index) => {
-                return candidate.firstname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || candidate.lastname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
+                const fullName = candidate.firstname  + " " +  candidate.lastname;
+                return candidate.firstname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || candidate.lastname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || candidate.skills.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || fullName.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
             })
         }   
 
@@ -49,15 +50,11 @@ export default class CandidateInfoList extends Component {
                                 <p>Name: {candidate.firstname} {candidate.lastname}</p>
                                 <p>Skills: {candidate.skills}</p>
                             </div>
-                            <div className="margin-small" >
-                                <Evaluation/>
-                                
+                            <div className="evaluation-wrapper" >
+                                <Evaluation/> 
+                                <div className="file"><a href=""> Resume </a></div>                            
                             </div>
-                            <div  className="margin-small">
-                                <a href=""> Resume </a>
-                            </div>
-                            <div>
-                                {/* <button className="btn-update" onClick={(e)=>this.handleUpdate(e, candidateID)}>Update</button> */}
+                              <div>
                                 <button className="btn-view" onClick={(e)=>this.handleView(e, candidate)}>View</button>
                                 <button className="btn-delete" onClick={(e)=>this.handleDelete(e, candidateID,candidate)}>delete</button>
                             </div>

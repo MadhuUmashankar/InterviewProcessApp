@@ -117,13 +117,6 @@ export default class CandidateForm extends React.Component{
                                                         {candidate && candidate.firstname}
                                                     </label> 
                                                 </span>
-                                                {/* <span>
-                                                    <EditButton 
-                                                        handleEditView={this.handleEditView}  
-                                                        title="edit" 
-                                                        classname="glyphicon edit-btn glyphicon-edit">
-                                                    </EditButton>
-                                                </span> */}
                                             </div>
                                         }
                                        
@@ -144,7 +137,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="Last Name"
                                                 classname="form-control"
                                                 name="lastname"
-                                                value = {this.state.lastname}
+                                                value = { modalEditView &&  candidate ? candidate.lastname : this.state.lastname}
                                                 required
                                                 onChange = {this.handleOnChange}
                                             />
@@ -157,13 +150,7 @@ export default class CandidateForm extends React.Component{
                                                         {candidate && candidate.lastname}
                                                     </label> 
                                                 </span>
-                                                {/* <span>
-                                                    <EditButton 
-                                                        handleEditView={this.handleEditView}  
-                                                        title="edit" 
-                                                        classname="glyphicon edit-btn glyphicon-edit">
-                                                    </EditButton>
-                                                </span> */}
+
                                             </div>
                                         }
                                          </div>
@@ -184,7 +171,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="E-Mail Address"
                                                 classname="form-control"
                                                 name="email"
-                                                value = {this.state.email}
+                                                value = { modalEditView &&  candidate ? candidate.email : this.state.email}
                                                 required
                                                 onChange = {this.handleOnChange}
                                             />
@@ -197,7 +184,7 @@ export default class CandidateForm extends React.Component{
                                                         {candidate && candidate.email}
                                                     </label> 
                                                 </span>
-                                                {/* <span><button onClick={this.handleEditView} title="edit" className="glyphicon edit-btn glyphicon-edit"></button></span> */}
+                                                
                                             </div>
                                         }
                                         </div>
@@ -217,7 +204,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="(91)12345-67890"
                                                 classname="form-control"
                                                 name="phone"
-                                                value = {this.state.phone}
+                                                value = { modalEditView &&  candidate ? candidate.phone : this.state.phone}
                                                 onChange = {this.handleOnChange}
                                             />
                                             </div>
@@ -229,7 +216,7 @@ export default class CandidateForm extends React.Component{
                                                         {candidate && candidate.phone}
                                                     </label> 
                                                 </span>
-                                                {/* <span><button onClick={this.handleEditView} title="edit" className="glyphicon edit-btn glyphicon-edit"></button></span> */}
+                                               
                                             </div>
                                         }
                                         </div>
@@ -249,7 +236,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="city"
                                                 classname="form-control"
                                                 name="city"
-                                                value = {this.state.city}
+                                                value = { modalEditView &&  candidate ? candidate.city : this.state.city}
                                                 required
                                                 onChange = {this.handleOnChange}
                                             />
@@ -262,7 +249,7 @@ export default class CandidateForm extends React.Component{
                                                         {candidate && candidate.city}
                                                     </label> 
                                                 </span>
-                                                {/* <span><button onClick={this.handleEditView} title="edit" className="glyphicon edit-btn glyphicon-edit"></button></span> */}
+                                               
                                             </div>
                                         }
                                         </div>
@@ -281,7 +268,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="key skills"
                                                 classname="form-control"
                                                 name="skills"
-                                                value = {this.state.skills}
+                                                value = { modalEditView &&  candidate ? candidate.skills : this.state.skills}
                                                 required
                                                 onChange = {this.handleOnChange}
                                             />
@@ -294,7 +281,7 @@ export default class CandidateForm extends React.Component{
                                                         {candidate && candidate.skills}
                                                     </label> 
                                                 </span>
-                                                {/* <span><button onClick={this.handleEditView} title="edit" className="glyphicon edit-btn glyphicon-pencil"></button></span> */}
+                                                
                                             </div>
                                         }
                                         </div>
@@ -302,7 +289,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             {
-                                !modalLabelView && !modalEditView &&
+                                !modalLabelView && modalEditView &&
                                 <div className="form-group">
                                     <label className="col-md-4 control-label">Upload Resume</label>
                                     <div className="col-md-6 inputGroupContainer">

@@ -29,3 +29,13 @@
         border-radius: 5px;   
     }
 }
+
+.evaluation-wrapper {
+    display: flex;
+    margin: 20px 0;
+    .file {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+    }
+} 
