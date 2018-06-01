@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
     "build": "webpack --progress --colors --watch --hot"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "mongojs": "^2.4.0",
     "mongoose": "^5.0.17",
     "morgan": "~1.7.0",
+    "nodemon": "^1.17.5",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.10",
     "react-dom": "^15.4.2",

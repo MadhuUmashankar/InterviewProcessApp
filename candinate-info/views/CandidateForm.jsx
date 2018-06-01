@@ -289,7 +289,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             {
-                                !modalLabelView && modalEditView &&
+                                !modalLabelView && 
                                 <div className="form-group">
                                     <label className="col-md-4 control-label">Upload Resume</label>
                                     <div className="col-md-6 inputGroupContainer">
@@ -298,8 +298,28 @@ export default class CandidateForm extends React.Component{
                                         </div>
                                     </div>    
                                 </div>
-                            }
-                            
+                            }   
+                            {
+                                modalLabelView && 
+                                <div className="form-group">
+                                    <label className="col-md-4 control-label">Resume</label>  
+                                        <div className="col-md-6 inputGroupContainer">
+                                            <div className="input-group">
+                                            
+                                            {modalLabelView &&
+                                                <div>
+                                                    <span>:
+                                                        <label> 
+                                                            <a href="">Resume</a>
+                                                        </label>   
+                                                    </span>
+                                                    
+                                                </div>
+                                            }
+                                            </div>
+                                        </div>
+                                    </div>
+                            }                  
 
 
                             <div className="form-group">
