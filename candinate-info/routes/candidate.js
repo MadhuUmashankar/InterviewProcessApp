@@ -80,11 +80,11 @@ router.put('/candidateInfo/:id', function(req, res, next){
     if(candidate.email){
         updcandidateInfo.email = candidate.email;
     }
-    if(candidate.address){
+    if(candidate.phone){
         updcandidateInfo.phone = candidate.phone;
     }
     if(candidate.city){
-        updcandidateInfo.phone = candidate.city;
+        updcandidateInfo.city = candidate.city;
     }
     
     if(!updcandidateInfo){

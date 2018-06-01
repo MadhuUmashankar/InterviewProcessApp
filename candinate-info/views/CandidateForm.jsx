@@ -315,7 +315,7 @@ export default class CandidateForm extends React.Component{
                                             <EditButton 
                                                 handleEditView={this.handleEditView}  
                                                 title="edit" 
-                                                classname="btn btn-info"
+                                                classname="btn btn-info btn-primary"
                                                 value="Edit">                                                
                                             </EditButton>
                                         }                                     
