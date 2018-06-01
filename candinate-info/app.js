@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var candinateRouter = require('./routes/candinate');
+var candinateRouter = require('./routes/candidate');
 
 var app = express();
 

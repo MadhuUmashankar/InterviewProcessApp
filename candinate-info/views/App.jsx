@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import CandinateForm from './CandinateForm';
-import CandinateInfoList from './CandinateInfoList';
+import CandidateForm from './CandidateForm';
+import CandidateInfoList from './CandidateInfoList';
 import './App.scss';
 import { Modal,Button } from 'react-bootstrap';
 import InputBox from './InputBox'
@@ -34,7 +34,7 @@ class App extends Component {
             this.setState({ show: false });
             let newCandinate = records.concat([record]);
             this.setState({ data: newCandinate });
-            axios.post(this.props.url+'/newCandinate', record)
+            axios.post(this.props.url+'/newCandidate', record)
                 .catch(err => {
                     console.error(err);
                     this.setState({ data: records });
@@ -116,7 +116,7 @@ class App extends Component {
                 <Modal.Title>Candidate Form</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <CandinateForm  onHandleSubmit={ this.handleSubmit }/>
+                <CandidateForm  onHandleSubmit={ this.handleSubmit }/>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={this.handleClose}>Close</Button>
@@ -124,7 +124,7 @@ class App extends Component {
         </Modal>
 
 
-        <CandinateInfoList
+        <CandidateInfoList
             onDelete={ this.handleDelete }
             onUpdate={ this.handleUpdate }
             data={ data }
