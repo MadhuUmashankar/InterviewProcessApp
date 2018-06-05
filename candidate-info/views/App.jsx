@@ -35,13 +35,20 @@ class App extends Component {
             this.setState({ show: false });
             let newCandidate = records.concat([record]);
             this.setState({ data: newCandidate });
-            axios.post(this.props.url+'/newCandidate', record)
-                .catch(err => {
-                    console.error(err);
-                    this.setState({ data: records });
-                });
-        }
+             let formData = new FormData();
+            formData.append('selectedFile', record.selectedFile);
+         
+           axios.all([  
+            axios.post(this.props.url+'/upload', formData),
+            axios.post(this.props.url+'/newCandidate', record),
+           ])
+           .catch(err => {
+            console.error(err);
+            this.setState({ data: records });
+        })
+           }
     }
+
 
     handleDelete(id) {
         var {data} = this.state;

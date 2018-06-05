@@ -28,6 +28,7 @@ export default class CandidateInfoList extends Component {
         window.location.href = "/CandidateAcessment";
     }
 
+   
     render() {
         const {data, searchKey} = this.props;
 
@@ -52,7 +53,7 @@ export default class CandidateInfoList extends Component {
                             </div>
                             <div className="evaluation-wrapper" >
                                 <Evaluation/> 
-                                <div className="file"><a href=""> Resume </a></div>                            
+                                <div className="file"><a href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>                            
                             </div>
                               <div>
                                 <button className="btn-view" onClick={(e)=>this.handleView(e, candidate)}>View</button>

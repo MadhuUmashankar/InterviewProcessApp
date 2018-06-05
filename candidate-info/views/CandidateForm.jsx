@@ -15,12 +15,15 @@ export default class CandidateForm extends React.Component{
             city: '',
             modalLabelView: props.modalLabelView,
             candidate: props.candidate,
-            modalEditView: false
+            modalEditView: false,
+            selectedFile : null,
+            selectedFile_name : ''
         };
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleEditView = this.handleEditView.bind(this);
+        this.upLoadFile = this.upLoadFile.bind(this);
     }
 
     handleOnChange(event) {
@@ -60,13 +63,15 @@ export default class CandidateForm extends React.Component{
     
     handleSubmit(e) {
         e.preventDefault();
-        const {firstname, lastname, skills, email, phone, city} = this.state;
+        console.log("In handle Submit");
+        console.log(this.state.selectedFile);
+        const {firstname, lastname, skills, email, phone, city,selectedFile_name,selectedFile} = this.state;
         const {onHandleSubmit} = this.props;
 
-        if (!firstname || !lastname || !skills || !email || !phone || !city) {
+        if (!firstname || !lastname || !skills || !email || !phone || !city || !selectedFile_name || !selectedFile) {
             return;
         }
-        onHandleSubmit({ firstname, lastname, skills, email, phone, city});
+        onHandleSubmit({ firstname, lastname, skills, email, phone, city,selectedFile_name,selectedFile});
     }
 
     handleEditView(modalEditView) {
@@ -80,6 +85,16 @@ export default class CandidateForm extends React.Component{
         console.log(candidate);
         handleUpdate(candidateId, candidate);
     }
+
+    upLoadFile(event){
+        event.preventDefault();
+         this.setState({
+            selectedFile : event.target.files[0],
+            selectedFile_name : event.target.files[0].name
+         })
+         console.log("UPload file mein");
+         console.log(this.state.selectedFile);
+        }
 
 
     render(){
@@ -290,11 +305,13 @@ export default class CandidateForm extends React.Component{
 
                             {
                                 !modalLabelView && 
+                            
+                               
                                 <div className="form-group">
                                     <label className="col-md-4 control-label">Upload Resume</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
-                                            <input type="file" className="form-control-file" id="exampleFormControlFile1"/>
+                                            <input type="file" className="form-control-file" id="exampleFormControlFile1" onChange = {this.upLoadFile}/>
                                         </div>
                                     </div>    
                                 </div>
