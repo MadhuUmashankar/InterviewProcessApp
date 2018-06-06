@@ -4,7 +4,7 @@ var path = require('path');
 var multer = require('multer');
 var mongojs = require('mongojs');
 var uuid = require('uuid');
-var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['candidateInformationTables']);
+var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['candidateInformationTables', 'evaluationSheetInformationTables']);
 
 // Get All candidate Info
 router.get('/candidateInfo', function(req, res, next){
@@ -23,9 +23,11 @@ router.get('/upload', function (req, res, next) {
     var filePath = "/upload"; // Or format the path using the `id` rest param
     var fileName = "jd"; // The default name the browser will use
 
-    res.download(filePath, fileName);    
+    res.download(filePath, fileName);
 }); */
 ///
+
+
 // Get All IA Info
 router.get('/newIAForm', function(req, res, next){
     db.evaluationSheetInformationTables.find(function(err, evaluationSheetInformationTables){
@@ -53,7 +55,7 @@ var storage = multer.diskStorage({
     }
     ,
     filename: function (req, file, cb) {
-    
+
         const newFilename = `${(file.originalname)}`;
     //  const newFilename = `${uuid()}${path.extname(file.originalname)}`;
      // const newFilename = `${path.extname(file.originalname)}`;
@@ -61,14 +63,14 @@ var storage = multer.diskStorage({
       //cb(null, file.fieldname + '-' + Date.now())
     }
   })
-  
+
   var upload = multer({ storage})
 
 
 router.post('/candidateInfo/upload', upload.single('selectedFile'), (req, res) => {
     // ram code const selectedFile = req.selectedFile;
     res.send();
-}) 
+})
 
 //code
 
@@ -88,7 +90,7 @@ router.post('/candidateInfo/newCandidate', function(req, res, next){
                 res.send(err);
             }
             res.json(candidate);
-            
+
         });
     }
 });
@@ -128,7 +130,7 @@ router.put('/candidateInfo/:id', function(req, res, next){
     if(candidate.city){
         updcandidateInfo.city = candidate.city;
     }
-    
+
     if(!updcandidateInfo){
         res.status(400);
         res.json({
@@ -164,4 +166,3 @@ router.post('/newIAForm', function(req, res, next){
 });
 
 module.exports = router;
-

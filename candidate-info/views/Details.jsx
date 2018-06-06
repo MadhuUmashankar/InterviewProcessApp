@@ -1,5 +1,6 @@
 import React from 'react';
 import InputBox from './InputBox'
+import './Details.scss'
 
 class Details extends React.Component {
   constructor(props) {
@@ -27,17 +28,19 @@ class Details extends React.Component {
           default:
               break;
       }
+
+      this.onDetailsSave(event);
   }
 
-  onSubmit() {
+  onDetailsSave(e) {
+    e.preventDefault();
     const {candidateName, interviewDate, interviewerName} = this.state;
-    const {onSubmit} = this.props;
-    console.log('this.props', this.props)
+    const {onDetailsSave} = this.props;
 
     if (!candidateName || !interviewDate || !interviewerName) {
         return;
     }
-    onSubmit({ candidateName, interviewDate, interviewerName});
+    onDetailsSave({candidateName, interviewDate, interviewerName});
 
   }
 
@@ -46,9 +49,7 @@ class Details extends React.Component {
   render(){
     return(
           <div>
-          <form className="form-inline">
-              <div>
-                  <div className="form-group pull-left required">
+                  <div className="form-group required details-width padding">
                     <label className="control-label" htmlFor="cName">Candidate Name:</label>
                     <InputBox
                         type="text"
@@ -63,7 +64,7 @@ class Details extends React.Component {
                         onChange = {this.handleOnChange}
                     />
                   </div>
-                  <div className="form-group align required">
+                  <div className="form-group  required details-width padding">
                     <label className="control-label" htmlFor="iDate">Interview Date:</label>
                     <InputBox
                         type="date"
@@ -75,10 +76,9 @@ class Details extends React.Component {
                         onChange = {this.handleOnChange}
                     />
 
-                  </div>
               </div>
-                  <div className="form-group align-margin required">
-                    <label className="control-label" htmlFor="tInt">Technical Interviewers:</label>
+                  <div className="form-group required details-width">
+                    <label className="control-label" htmlFor="tInt">Interviewer Name</label>
                     <InputBox
                         type="text"
                         placeholder="Enter Interviewer's name"
@@ -92,7 +92,7 @@ class Details extends React.Component {
                     />
 
                   </div>
-                  </form>
+
           </div>
     )
   }

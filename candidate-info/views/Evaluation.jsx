@@ -14,13 +14,26 @@ class Evaluation extends Component {
 
      this.state = {
        show: false,
-       data: []
+       data: [],
+       detailsData: [],
+       expertiseData: []
+
      };
 
     this.handleSaveChanges = this.handleSaveChanges.bind(this);
+    this.loadDetailsFromServerForIASheet = this.loadDetailsFromServerForIASheet.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleDetailsData = this.handleDetailsData.bind(this);
+    this.handleExpertiseData = this.handleExpertiseData.bind(this);
+   }
 
+   loadDetailsFromServerForIASheet() {
+       axios.get('/newIAForm')
+           .then(res => {
+             console.log('response from server', res.data);
+               this.setState({ data: res.data });
+           })
    }
 
 
@@ -32,20 +45,38 @@ class Evaluation extends Component {
       this.setState({ show: true });
   }
 
+  componentDidMount() {
+      this.loadDetailsFromServerForIASheet();
+      setInterval(this.loadTodosFromServer, this.props.pollInterval);
+  }
+
+  handleDetailsData(details) {
+    this.handleSaveChanges(details);
+  }
+
+  handleExpertiseData(expertise) {
+      this.handleSaveChanges(expertise);
+  }
+
+
   handleSaveChanges(record) {
-    console.log('inside parent');
+    console.log('e', event)
+    event.preventDefault();
+    console.log('inside Evaluation', record);
       if(record) {
           let records = this.state.data;
           this.setState({ show: false });
           let newIAForm = records.concat([record]);
           this.setState({ data: newIAForm });
-            console.log('data', newIAForm, record)
+            console.log('datadfdgdf', newIAForm, record)
 
-          axios.post(this.props.url+'/newIAForm', record)
-              .catch(err => {
-                  console.error(err);
-                  this.setState({ data: records });
-              });
+          // axios.post('/newIAForm', record)
+          //     .catch(err => {
+          //         console.error(err);
+          //         this.setState({ data: records });
+          //     });
+      } else {
+        return false
       }
   }
 
@@ -59,21 +90,21 @@ class Evaluation extends Component {
 
         <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Candidate Evaluation Form</Modal.Title>
+          <h2 className="ia-form-title">Candidate Evaluation Form</h2>
           </Modal.Header>
           <Modal.Body>
-            <div>
-                
+            <form onSubmit= {this.handleSaveChanges}>
+
                   <div className="margin-small">
-                    <Details ref={instance => { this.child = instance; }} onSubmit= {this.handleSaveChanges} />
+                    <Details onDetailsSave= {this.handleDetailsData} />
                   </div>
 
                   <div className="margin-small">
                     <Note />
                   </div>
 
-                  <div className="margin-small pd-large">
-                    <Expertise />
+                  <div className="margin-small">
+                    <Expertise onExpertiseSave= {this.handleExpertiseData} />
                   </div>
 
                   <div className="margin-small">
@@ -91,15 +122,12 @@ class Evaluation extends Component {
 
 
 
-            </div>
+            </form>
 
           </Modal.Body>
 
-
-
-
           <Modal.Footer>
-            <Button onClick={() => { this.child.onSubmit(); }}>SaveChanges</Button>
+            <Button>SaveChanges</Button>
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>
         </Modal>
