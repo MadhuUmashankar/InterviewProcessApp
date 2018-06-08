@@ -6,52 +6,45 @@ class Expertise extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-        rows: [{}]
+        rows: [{}],
+        value: ''
   };
   this.handleInputChange = this.handleInputChange.bind(this) ;
   this.handleAddRow = this.handleAddRow.bind(this);
   this.handleRemoveRow = this.handleRemoveRow.bind(this);
+  this.onExpertiseSave = this.onExpertiseSave.bind(this);
 }
 
  handleInputChange(event, idx) {
-  var abc = function(event) {
+    var abc = function(event) {
       const { name, value } = event.target;
       let rows = [...this.state.rows];
+      rows[idx] = Object.assign({}, rows[idx], {[name]: value})
 
-    rows[idx] = Object.assign({}, rows[idx], {[name]: value})
-
-    this.setState({
-        rows
-      });
+      this.setState({rows});
 
     }.bind(this);
-      this.onExpertiseSave(event);
+    this.onExpertiseSave(event);
     return abc(event);
-
   };
 
-  handleAddRow () {
+  handleAddRow (e) {
+    e.preventDefault();
     const item = {};
-    this.setState({
-      rows: [...this.state.rows, item]
-    });
+    this.setState({rows: [...this.state.rows, item]});
   };
 
   handleRemoveRow () {
-    this.setState({
-      rows: this.state.rows.slice(0, -1)
-    });
+    this.setState({rows: this.state.rows.slice(0, -1)});
   };
 
-  onExpertiseSave(e) {
-    e.preventDefault();
+  onExpertiseSave() {
     const {rows} = this.state;
     const {onExpertiseSave} = this.props;
 
-    if (!rows) {
-        return;
-    }
-    onExpertiseSave(e, {rows});
+    if (!rows) {return;}
+    console.log('rows', rows)
+    onExpertiseSave({rows});
   }
 
   render(){
@@ -59,17 +52,18 @@ class Expertise extends React.Component {
       <div>
         <div className="container-fluid border">
           <div className="row clearfix header">
-          <div className="col-sm-5"><label>Technical Interview: 80%</label></div>
+          <div className="col-sm-5"><label className="experience-label">Technical Interview: 80%</label></div>
 
                   <div className="col-sm-6">
-                      <label>Calculated Score</label>
+                      <label className="experience-label">Calculated Score</label>
+                      <InputBox type="text" value={this.state.value} />
                   </div>
             </div>
             <div>
               <table
                 className="table table-bordered table-hover expertised-area"
                 id="tab_logic">
-                <thead>
+                <thead className="color">
                   <tr>
                       <th className="col-sm-2 text-center">Area of Expertise</th>
                       <th className="col-sm-2 text-center">Junior Minimum</th>
@@ -100,6 +94,8 @@ class Expertise extends React.Component {
                           name="juniorMinimumScore"
                           id="juniorMinimumScoreId"
                           value={this.state.rows[idx].juniorMinimumScore}
+                          min="1"
+                          max="10"
                           onChange = {(e)=>this.handleInputChange(e,idx)}
                       />
                       </td>
@@ -140,7 +136,7 @@ class Expertise extends React.Component {
                   ))}
                 </tbody>
               </table>
-              <button onClick={this.handleAddRow} className="btn btn-primary">
+              <button onClick={(e)=>{this.handleAddRow(e)}} className="btn btn-primary">
                 Add Row
               </button>
               <button onClick={this.handleRemoveRow} className="btn btn-danger float-right">

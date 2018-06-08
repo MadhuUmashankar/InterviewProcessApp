@@ -14,10 +14,21 @@ export default class InputBox extends Component {
     }
 
     render() {
-        const {type, classname, placeholder, id, required, autoFocus, name, maxLength} = this.props;
+        const {type, classname, placeholder, id, required, autoFocus, name, maxLength, min, max} = this.props;
         const {value} = this.state;
          return (
-            <input type={type} id={id} name={name} className={classname} placeholder={placeholder} onChange={this.OnHandleChange} value={value} required={required} autoFocus={autoFocus} maxLength={maxLength}/>
+            <input type={type}
+             id={id}
+             name={name}
+             className={classname}
+             placeholder={placeholder}
+             onChange={this.OnHandleChange}
+             value={value}
+             required={required}
+             autoFocus={autoFocus}
+             maxLength={maxLength}
+             min={min}
+             max={max} />
         );
     }
 }

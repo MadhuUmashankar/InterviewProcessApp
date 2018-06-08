@@ -15,17 +15,23 @@ class Evaluation extends Component {
      this.state = {
        show: false,
        data: [],
-       detailsData: [],
-       expertiseData: []
-
+       detailsData: {},
+       experience:{},
+       expertiseData: {},
+       impression:{},
+       summaryData:{},
+       candidate:props.candidate
      };
 
-    this.handleSaveChanges = this.handleSaveChanges.bind(this);
+    this.handleSubmitIAForm = this.handleSubmitIAForm.bind(this);
     this.loadDetailsFromServerForIASheet = this.loadDetailsFromServerForIASheet.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleDetailsData = this.handleDetailsData.bind(this);
+    this.handleNoteData = this.handleNoteData.bind(this);
+    this.handleImpressionSave = this.handleImpressionSave.bind(this);
     this.handleExpertiseData = this.handleExpertiseData.bind(this);
+    this.handleSummaryData = this.handleSummaryData.bind(this);
    }
 
    loadDetailsFromServerForIASheet() {
@@ -51,36 +57,52 @@ class Evaluation extends Component {
   }
 
   handleDetailsData(details) {
-    this.handleSaveChanges(details);
+    this.setState({detailsData: details});
+  }
+
+  handleNoteData(experience) {
+    this.setState({experience});
   }
 
   handleExpertiseData(expertise) {
-      this.handleSaveChanges(expertise);
+    this.setState({expertiseData: expertise});
+    console.log('expertiseData', this.state.expertiseData)
+  }
+
+  handleImpressionSave(impression) {
+      this.setState({impression});
+  }
+
+  handleSummaryData(summary) {
+    this.setState({summaryData: summary});
   }
 
 
-  handleSaveChanges(record) {
-    console.log('e', event)
-    event.preventDefault();
-    console.log('inside Evaluation', record);
+  handleSubmitIAForm(e) {
+    e.preventDefault();
+    const {detailsData, candidate, experience, expertiseData, impression, summaryData} = this.state;
+    // Candidate IA Form data
+    const fullname = candidate.firstname + " " + candidate.lastname;
+    const record = Object.assign({}, detailsData, {candidateName: fullname}, {experience}, expertiseData, {impression}, {summaryData})
+    this.setState({ show: false });
+
       if(record) {
           let records = this.state.data;
-          this.setState({ show: false });
-          let newIAForm = records.concat([record]);
+          let newIAForm = records.concat(record);
           this.setState({ data: newIAForm });
-            console.log('datadfdgdf', newIAForm, record)
 
-          // axios.post('/newIAForm', record)
-          //     .catch(err => {
-          //         console.error(err);
-          //         this.setState({ data: records });
-          //     });
+          axios.post('/newIAForm', record)
+              .catch(err => {
+                  console.error(err);
+                  this.setState({ data: records });
+              });
       } else {
         return false
       }
   }
 
   render() {
+    const {candidate} = this.state;
 
     return (
       <div>
@@ -93,14 +115,15 @@ class Evaluation extends Component {
           <h2 className="ia-form-title">Candidate Evaluation Form</h2>
           </Modal.Header>
           <Modal.Body>
-            <form onSubmit= {this.handleSaveChanges}>
+
+            <form  onSubmit= {this.handleSubmitIAForm}>
 
                   <div className="margin-small">
-                    <Details onDetailsSave= {this.handleDetailsData} />
+                    <Details onDetailsSave= {this.handleDetailsData} candidate={candidate}/>
                   </div>
 
                   <div className="margin-small">
-                    <Note />
+                    <Note onNoteSave= {this.handleNoteData}/>
                   </div>
 
                   <div className="margin-small">
@@ -108,28 +131,26 @@ class Evaluation extends Component {
                   </div>
 
                   <div className="margin-small">
-                    <Impression />
-                  </div>
-
-                  <div className="row header col-sm-4 margin-small">
-                      <div className="col-sm-4"><label>Total: </label></div>
-                      <div className="col-sm-4"><input type="number" /></div>
+                    <Impression onImpressionSave= {this.handleImpressionSave}/>
                   </div>
 
                   <div className="margin-small">
-                    <Summary />
+                    <div className="col-sm-4 total">
+                      <label className="experience-label">Total: </label>
+                      <input type="number" />
+                    </div>
+
+                    <Summary onSummarySave= {this.handleSummaryData} />
                   </div>
 
-
+                    <Button className="move-right" type="submit" >Save Changes</Button>
+                    <Button onClick={this.handleClose}>Close</Button>
 
             </form>
 
           </Modal.Body>
 
-          <Modal.Footer>
-            <Button>SaveChanges</Button>
-            <Button onClick={this.handleClose}>Close</Button>
-          </Modal.Footer>
+
         </Modal>
       </div>
     );

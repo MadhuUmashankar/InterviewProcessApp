@@ -10,7 +10,7 @@ export default class CandidateForm extends React.Component{
             firstname : '',
             lastname : '',
             skills : '',
-            email: '', 
+            email: '',
             phone: '',
             city: '',
             modalLabelView: props.modalLabelView,
@@ -55,12 +55,12 @@ export default class CandidateForm extends React.Component{
                 candidate["skills"] = value;
                 this.setState({skills : value})
                 break;
-        
+
             default:
                 break;
         }
     }
-    
+
     handleSubmit(e) {
         e.preventDefault();
         console.log("In handle Submit");
@@ -100,16 +100,16 @@ export default class CandidateForm extends React.Component{
     render(){
         const { candidate } = this.state;
         const { modalLabelView, modalEditView } = this.state;
-   
+
         return(
                 <div className="form-container">
                     <form className="form-horizontal" id="contact_form" onSubmit={ this.handleSubmit }>
                         <fieldset className = "background">
                             <div className="form-group">
-                                <label className="col-md-4 control-label">First Name</label>  
+                                <label className="col-md-4 control-label">First Name</label>
                                 <div className="col-md-6 inputGroupContainer">
                                     <div className="input-group">
-                                        
+
                                         {!modalLabelView &&
                                             <div>
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
@@ -121,26 +121,26 @@ export default class CandidateForm extends React.Component{
                                                 value = { modalEditView &&  candidate ? candidate.firstname : this.state.firstname}
                                                 autoFocus="true"
                                                 required
-                                                onChange = {this.handleOnChange}                                    
+                                                onChange = {this.handleOnChange}
                                             />
                                             </div>
                                         }
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>                             
+                                                    <label>
                                                         {candidate && candidate.firstname}
-                                                    </label> 
+                                                    </label>
                                                 </span>
                                             </div>
                                         }
-                                       
+
                                     </div>
                                 </div>
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label" >Last Name</label> 
+                                <label className="col-md-4 control-label" >Last Name</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -161,9 +161,9 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>                             
+                                                    <label>
                                                         {candidate && candidate.lastname}
-                                                    </label> 
+                                                    </label>
                                                 </span>
 
                                             </div>
@@ -174,9 +174,9 @@ export default class CandidateForm extends React.Component{
 
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">E-Mail</label>  
+                                <label className="col-md-4 control-label">E-Mail</label>
                                     <div className="col-md-6 inputGroupContainer">
-                                        <div className="input-group">                                            
+                                        <div className="input-group">
 
                                         {!modalLabelView &&
                                             <div>
@@ -195,11 +195,11 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>                             
+                                                    <label>
                                                         {candidate && candidate.email}
-                                                    </label> 
+                                                    </label>
                                                 </span>
-                                                
+
                                             </div>
                                         }
                                         </div>
@@ -207,18 +207,19 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">Phone</label>  
+                                <label className="col-md-4 control-label">Phone</label>
                                     <div className="col-md-6 inputGroupContainer">
-                                        <div className="input-group">                                        
-                                            
+                                        <div className="input-group">
+
                                         {!modalLabelView &&
                                             <div>
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-earphone"></i></span>
                                             <InputBox
-                                                type="text"
+                                                type="tel"
                                                 placeholder="(91)12345-67890"
                                                 classname="form-control"
                                                 name="phone"
+                                                maxLength="10"
                                                 value = { modalEditView &&  candidate ? candidate.phone : this.state.phone}
                                                 onChange = {this.handleOnChange}
                                             />
@@ -227,11 +228,11 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>                             
+                                                    <label>
                                                         {candidate && candidate.phone}
-                                                    </label> 
+                                                    </label>
                                                 </span>
-                                               
+
                                             </div>
                                         }
                                         </div>
@@ -239,10 +240,10 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">City</label>  
+                                <label className="col-md-4 control-label">City</label>
                                     <div className="col-md-6 inputGroupContainer">
-                                        <div className="input-group">                                            
-                                            
+                                        <div className="input-group">
+
                                         {!modalLabelView &&
                                             <div>
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-home"></i></span>
@@ -260,11 +261,11 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>                             
+                                                    <label>
                                                         {candidate && candidate.city}
-                                                    </label> 
+                                                    </label>
                                                 </span>
-                                               
+
                                             </div>
                                         }
                                         </div>
@@ -272,7 +273,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                               <div className="form-group">
-                                <label className="col-md-4 control-label">Key Skills</label>  
+                                <label className="col-md-4 control-label">Key Skills</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
                                         {!modalLabelView &&
@@ -292,11 +293,11 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>                             
+                                                    <label>
                                                         {candidate && candidate.skills}
-                                                    </label> 
+                                                    </label>
                                                 </span>
-                                                
+
                                             </div>
                                         }
                                         </div>
@@ -304,39 +305,39 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             {
-                                !modalLabelView && 
-                            
-                               
+                                !modalLabelView &&
+
+
                                 <div className="form-group">
                                     <label className="col-md-4 control-label">Upload Resume</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
                                             <input type="file" className="form-control-file" id="exampleFormControlFile1" onChange = {this.upLoadFile}/>
                                         </div>
-                                    </div>    
+                                    </div>
                                 </div>
-                            }   
+                            }
                             {
-                                modalLabelView && 
+                                modalLabelView &&
                                 <div className="form-group">
-                                    <label className="col-md-4 control-label">Resume</label>  
+                                    <label className="col-md-4 control-label">Resume</label>
                                         <div className="col-md-6 inputGroupContainer">
                                             <div className="input-group">
-                                            
+
                                             {modalLabelView &&
                                                 <div>
                                                     <span>:
-                                                        <label> 
+                                                        <label>
                                                             <a href="">Resume</a>
-                                                        </label>   
+                                                        </label>
                                                     </span>
-                                                    
+
                                                 </div>
                                             }
                                             </div>
                                         </div>
                                     </div>
-                            }                  
+                            }
 
 
                             <div className="form-group">
@@ -344,26 +345,25 @@ export default class CandidateForm extends React.Component{
                                     <div className="col-md-6">
                                         { !modalLabelView && !modalEditView &&
                                             <button className="btn btn-primary">Submit<span className="glyphicon glyphicon-submit"></span></button>
-                                        }  
+                                        }
                                         { !modalLabelView && modalEditView &&
                                             <button className="btn btn-primary" onClick={(e) => this.handleUpdate(e, candidate._id, candidate)}>Update<span className="glyphicon glyphicon-update"></span></button>
-                                        }  
+                                        }
                                         { modalLabelView && !modalEditView &&
-                                            <EditButton 
-                                                handleEditView={this.handleEditView}  
-                                                title="edit" 
+                                            <EditButton
+                                                handleEditView={this.handleEditView}
+                                                title="edit"
                                                 classname="btn btn-primary"
-                                                value="Edit">                                                
+                                                value="Edit">
                                             </EditButton>
-                                        }                                     
+                                        }
                                     </div>
                             </div>
 
                         </fieldset>
                     </form>
-            </div> 
-        
+            </div>
+
         )
     }
 }
-

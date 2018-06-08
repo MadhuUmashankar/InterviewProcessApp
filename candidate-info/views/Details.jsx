@@ -8,7 +8,8 @@ class Details extends React.Component {
       this.state = {
         candidateName: '',
         interviewDate: '',
-        interviewerName: ''
+        interviewerName: '',
+        candidate: props.candidate
       };
     this.handleOnChange = this.handleOnChange.bind(this);
   }
@@ -16,37 +17,40 @@ class Details extends React.Component {
   handleOnChange(event) {
       switch (event.target.name) {
           case "candidateName":
-              this.setState({candidateName : event.target.value})
+              this.setState({candidateName : event.target.value}, () => {
+                this.onDetailsSave();
+              })
               break;
           case "interviewDate":
-              this.setState({interviewDate : event.target.value})
+              this.setState({interviewDate : event.target.value}, () => {
+                this.onDetailsSave();
+              })
               break;
           case "interviewerName":
-              this.setState({interviewerName : event.target.value})
+              this.setState({interviewerName : event.target.value}, () => {
+                this.onDetailsSave();
+              })
               break;
-
           default:
               break;
       }
+    }
 
-      this.onDetailsSave(event);
-  }
-
-  onDetailsSave(e) {
-    e.preventDefault();
-    const {candidateName, interviewDate, interviewerName} = this.state;
+  onDetailsSave() {
+    const {interviewDate, interviewerName} = this.state;
     const {onDetailsSave} = this.props;
 
-    if (!candidateName || !interviewDate || !interviewerName) {
+    if (!interviewDate || !interviewerName) {
         return;
     }
-    onDetailsSave({candidateName, interviewDate, interviewerName});
-
+    onDetailsSave({interviewDate, interviewerName});
   }
 
 
 
   render(){
+    const {candidate} = this.state;
+
     return(
           <div>
                   <div className="form-group required details-width padding">
@@ -57,7 +61,7 @@ class Details extends React.Component {
                         classname="form-control"
                         name="candidateName"
                         id="candidateId"
-                        value = {this.state.candidateName}
+                        value = {candidate.firstname +" "+ candidate.lastname }
                         autoFocus="true"
                         maxLength="15"
                         required
@@ -92,7 +96,6 @@ class Details extends React.Component {
                     />
 
                   </div>
-
           </div>
     )
   }

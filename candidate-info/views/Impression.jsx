@@ -1,14 +1,29 @@
 import React from 'react';
 
 class Impression extends React.Component {
+  constructor(props) {
+    super(props)
+      this.state = {
+        candidateImpression: '',
+      };
+      this.handleOnChange = this.handleOnChange.bind(this);
+  }
+
+  handleOnChange(e) {
+    const {onImpressionSave} = this.props;
+    this.setState({candidateImpression: e.target.value},() => {
+          onImpressionSave(this.state.candidateImpression);
+    });
+  }
+
   render() {
     return(
       <div className="container-fluid border">
         <div className="row header">
-          <div className="col-sm-6"><label>Evaluator impression: 10%</label></div>
+          <div className="col-sm-6"><label className="experience-label">Evaluator impression: 10%</label></div>
           <div className="col-sm-4">
               <div className="form-group">
-                 <select className="form-control" id="experience">
+                 <select className="form-control" id="experience" onChange={this.handleOnChange}>
                    <option>Select</option>
                      <option>0</option>
                      <option>2</option>

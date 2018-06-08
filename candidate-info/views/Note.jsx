@@ -1,15 +1,31 @@
 import React from 'react';
-
+import './Note.scss';
 
 class Note extends React.Component {
+
+  constructor(props) {
+    super(props)
+      this.state = {
+        candidateExperience: '',
+      };
+      this.handleOnChange = this.handleOnChange.bind(this);
+  }
+
+  handleOnChange(e) {
+    const {onNoteSave} = this.props;
+    this.setState({candidateExperience: e.target.value},() => {
+          onNoteSave(this.state.candidateExperience);
+    });
+  }
+
   render(){
     return(
       <div className="container-fluid border">
         <div className="row header">
-          <div className="col-sm-6"><label>Experience: 10%</label></div>
+          <div className="col-sm-6"><label className="experience-label">Experience: 10%</label></div>
           <div className="col-sm-6">
               <div className="form-group">
-                 <select className="form-control" id="experience">
+                 <select className="form-control" id="experience" onChange={this.handleOnChange}>
                    <option>Select</option>
                      <option>0</option>
                      <option>2</option>

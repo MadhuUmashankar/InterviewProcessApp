@@ -28,7 +28,7 @@ export default class CandidateInfoList extends Component {
         window.location.href = "/CandidateAcessment";
     }
 
-   
+
     render() {
         const {data, searchKey} = this.props;
 
@@ -39,7 +39,7 @@ export default class CandidateInfoList extends Component {
                 const fullName = candidate.firstname  + " " +  candidate.lastname;
                 return candidate.firstname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || candidate.lastname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || candidate.skills.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || fullName.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
             })
-        }   
+        }
 
 
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
@@ -47,13 +47,28 @@ export default class CandidateInfoList extends Component {
             return (
                 <div  key={index}>
                         <div className="candidate-colum panel">
+                        <div className="form-group evaluation-status">
+                           <select className="form-control" id="experience">
+                             <option>Yet to be interviewed</option>
+                               <option>Rejected</option>
+                               <option>Selected</option>
+                               <option>On Hold</option>
+                               <option>Withdraw</option>
+                               <option>Move to Technical round 2</option>
+                               <option>Move to Manager round</option>
+                               <option>Move to HR round</option>
+                           </select>
+                           <div className="date-status">
+                           <label>June 7, 2018</label>
+                           </div>
+                        </div>
                             <div>
                                 <p>Name: {candidate.firstname} {candidate.lastname}</p>
                                 <p>Skills: {candidate.skills}</p>
                             </div>
                             <div className="evaluation-wrapper" >
-                                <Evaluation/> 
-                                <div className="file"><a href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>                            
+                                <Evaluation candidate={candidate}/>
+                                <div className="file"><a href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>
                             </div>
                               <div>
                                 <button className="btn-view" onClick={(e)=>this.handleView(e, candidate)}>View</button>
@@ -62,9 +77,9 @@ export default class CandidateInfoList extends Component {
                             {/* <div>
                                 <button className="btn-evaluate btn btn-lg btn-primary"  onClick={this.handleEvalution}>Start Evalution Process</button>
                             </div> */}
-                        </div>                    
-                </div>                
-                
+                        </div>
+                </div>
+
             )
         })
 
@@ -73,8 +88,8 @@ export default class CandidateInfoList extends Component {
             <div className="candidate-list">
                 {
                     candidateNodes.length > 0
-                    && candidateNodes 
-                }                                
+                    && candidateNodes
+                }
                 { candidateNodes.length === 0 && <p className="no-record">No records available</p>}
             </div>
         )

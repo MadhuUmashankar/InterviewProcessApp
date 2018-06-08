@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "build": "webpack --progress --colors --watch --hot"
+    "build": "webpack --progress --colors --watch --hot",
+    "start": "concurrently \"npm run build\" \"nodemon ./bin/www\""
   },
   "dependencies": {
     "axios": "^0.15.3",

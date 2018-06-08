@@ -2,6 +2,9 @@
   float: left;
 }
 
+.move-right {
+  float: right;
+}
 .align {
   margin-left: 60px;
 }
@@ -76,4 +79,13 @@ input {
 
 .cell-padding {
   padding-bottom: 10px;
+}
+
+.ia-form-title {
+  text-align: center;
+}
+
+.total {
+  margin-bottom: -20px;
+  float:right;
 }

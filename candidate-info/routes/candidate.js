@@ -150,19 +150,19 @@ router.put('/candidateInfo/:id', function(req, res, next){
 router.post('/newIAForm', function(req, res, next){
     var evaluator = req.body;
     console.log('inside axios',req.body);
-    if(!evaluator.candidateName){
-        res.status(400);
-        res.json({
-            "error": "Bad Data"
-        });
-    } else {
+    // if(!evaluator.candidateName){
+    //     res.status(400);
+    //     res.json({
+    //         "error": "Bad Data"
+    //     });
+    // } else {
         db.evaluationSheetInformationTables.save(evaluator, function(err, evaluator){
             if(err){
                 res.send(err);
             }
             res.json(evaluator);
         });
-    }
+    // }
 });
 
 module.exports = router;
