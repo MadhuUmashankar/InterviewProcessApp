@@ -7,6 +7,8 @@ class Note extends React.Component {
     super(props)
       this.state = {
         candidateExperience: '',
+        candidate: props.candidate,
+        data:props.data
       };
       this.handleOnChange = this.handleOnChange.bind(this);
   }
@@ -19,13 +21,16 @@ class Note extends React.Component {
   }
 
   render(){
+    const {candidate, data, candidateExperience} = this.state
+
     return(
       <div className="container-fluid border">
         <div className="row header">
           <div className="col-sm-6"><label className="experience-label">Experience: 10%</label></div>
           <div className="col-sm-6">
               <div className="form-group">
-                 <select className="form-control" id="experience" onChange={this.handleOnChange}>
+                 <select className="form-control" id="experience" onChange={this.handleOnChange}
+                  value={data? data.experience : this.state.candidateExperience}>
                    <option>Select</option>
                      <option>0</option>
                      <option>2</option>

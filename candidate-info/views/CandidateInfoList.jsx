@@ -30,7 +30,7 @@ export default class CandidateInfoList extends Component {
 
 
     render() {
-        const {data, searchKey} = this.props;
+        const {data, searchKey, url} = this.props;
 
         let candidateNodes = data;
 
@@ -67,7 +67,7 @@ export default class CandidateInfoList extends Component {
                                 <p>Skills: {candidate.skills}</p>
                             </div>
                             <div className="evaluation-wrapper" >
-                                <Evaluation candidate={candidate}/>
+                                <Evaluation candidate={candidate} url={url} index={index}/>
                                 <div className="file"><a href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>
                             </div>
                               <div>

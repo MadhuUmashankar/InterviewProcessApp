@@ -20,7 +20,9 @@ class Evaluation extends Component {
        expertiseData: {},
        impression:{},
        summaryData:{},
-       candidate:props.candidate
+       candidate:props.candidate,
+       url: props.url,
+       index:props.index
      };
 
     this.handleSubmitIAForm = this.handleSubmitIAForm.bind(this);
@@ -34,12 +36,18 @@ class Evaluation extends Component {
     this.handleSummaryData = this.handleSummaryData.bind(this);
    }
 
-   loadDetailsFromServerForIASheet() {
-       axios.get('/newIAForm')
-           .then(res => {
-             console.log('response from server', res.data);
-               this.setState({ data: res.data });
-           })
+   loadDetailsFromServerForIASheet(id) {
+     let iaUrl = this.state.url + '/newIAForm';
+       // axios.get(iaUrl)
+       //     .then(res => {
+       //       console.log('response from server', res.data);
+       //         this.setState({ data: res.data });
+       //     })
+       axios.get(`${iaUrl}/${id}`)
+      .then(res => {
+        console.log('response from server in get ia click', res.data);
+          this.setState({ data: res.data });
+      })
    }
 
 
@@ -48,11 +56,11 @@ class Evaluation extends Component {
   }
 
   handleShow() {
-      this.setState({ show: true });
+    this.setState({ show: true });
   }
 
   componentDidMount() {
-      this.loadDetailsFromServerForIASheet();
+      this.loadDetailsFromServerForIASheet(this.state.candidate._id);
       setInterval(this.loadTodosFromServer, this.props.pollInterval);
   }
 
@@ -66,7 +74,6 @@ class Evaluation extends Component {
 
   handleExpertiseData(expertise) {
     this.setState({expertiseData: expertise});
-    console.log('expertiseData', this.state.expertiseData)
   }
 
   handleImpressionSave(impression) {
@@ -77,36 +84,44 @@ class Evaluation extends Component {
     this.setState({summaryData: summary});
   }
 
+  handleUpdate(e, id, record) {
+    e.preventDefault();
+    let iaUrl = this.props.url + '/newIAForm';
+      this.setState({ show: false });
+      console.log('inside update------------',id,record,iaUrl);
+      //sends the new candidate id and new candidate to our api
+      axios.put(`${iaUrl}/${id}`, record)
+          .catch(err => {
+              console.log(err);
+          })
+  }
+
 
   handleSubmitIAForm(e) {
     e.preventDefault();
     const {detailsData, candidate, experience, expertiseData, impression, summaryData} = this.state;
     // Candidate IA Form data
     const fullname = candidate.firstname + " " + candidate.lastname;
-    const record = Object.assign({}, detailsData, {candidateName: fullname}, {experience}, expertiseData, {impression}, {summaryData})
+    const record = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, {candidateID: candidate._id})
     this.setState({ show: false });
-
       if(record) {
           let records = this.state.data;
           let newIAForm = records.concat(record);
           this.setState({ data: newIAForm });
 
-          axios.post('/newIAForm', record)
+          axios.post(this.props.url + '/newIAForm', record)
               .catch(err => {
                   console.error(err);
                   this.setState({ data: records });
               });
-      } else {
-        return false
       }
   }
 
   render() {
-    const {candidate} = this.state;
-
+    let {candidate, url, data, index} = this.state;
     return (
       <div>
-        <Button bsStyle="primary" onClick={this.handleShow}>
+        <Button bsStyle="primary" onClick={()=>{this.handleShow()}}>
           IA Form
         </Button>
 
@@ -117,21 +132,18 @@ class Evaluation extends Component {
           <Modal.Body>
 
             <form  onSubmit= {this.handleSubmitIAForm}>
-
                   <div className="margin-small">
-                    <Details onDetailsSave= {this.handleDetailsData} candidate={candidate}/>
+                    <Details onDetailsSave= {this.handleDetailsData} candidate={candidate} data={data[index]} />
+
                   </div>
-
                   <div className="margin-small">
-                    <Note onNoteSave= {this.handleNoteData}/>
-                  </div>
-
-                  <div className="margin-small">
-                    <Expertise onExpertiseSave= {this.handleExpertiseData} />
-                  </div>
-
-                  <div className="margin-small">
-                    <Impression onImpressionSave= {this.handleImpressionSave}/>
+                   <Note onNoteSave= {this.handleNoteData} candidate={candidate} data={data[index]} />
+                 </div>
+                 <div className="margin-small">
+                   <Expertise onExpertiseSave= {this.handleExpertiseData} candidate={candidate} data={data[index]} />
+                 </div>
+                 <div className="margin-small">
+                    <Impression onImpressionSave= {this.handleImpressionSave} candidate={candidate} data={data[index]} />
                   </div>
 
                   <div className="margin-small">
@@ -140,10 +152,10 @@ class Evaluation extends Component {
                       <input type="number" />
                     </div>
 
-                    <Summary onSummarySave= {this.handleSummaryData} />
-                  </div>
-
-                    <Button className="move-right" type="submit" >Save Changes</Button>
+                    <Summary onSummarySave= {this.handleSummaryData} candidate={candidate} data={data[index]} />
+                      </div>
+                    <Button className="move-right" type="submit">Save</Button>
+                    <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, candidate._id, data)}}>Update</Button>
                     <Button onClick={this.handleClose}>Close</Button>
 
             </form>

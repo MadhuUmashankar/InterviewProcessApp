@@ -1,7 +1,11 @@
 import React from 'react';
-import InputBox from './InputBox'
-import './Details.scss'
-
+import InputBox from './InputBox';
+import './Details.scss';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+// import 'react-datepicker/dist/react-datepicker.css';
+// require('react-datepicker/dist/react-datepicker.css');
+// C:\Users\madhurya.u\Desktop\madhu\InterviewProcessApp\candidate-info\node_modules\react-datepicker\dist\react-datepicker-cssmodules.css
 class Details extends React.Component {
   constructor(props) {
     super(props)
@@ -9,9 +13,12 @@ class Details extends React.Component {
         candidateName: '',
         interviewDate: '',
         interviewerName: '',
-        candidate: props.candidate
+        candidate: props.candidate,
+        data:props.data,
+        startDate: moment()
       };
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
   }
 
   handleOnChange(event) {
@@ -46,10 +53,15 @@ class Details extends React.Component {
     onDetailsSave({interviewDate, interviewerName});
   }
 
-
+  handleDateChange(date) {
+      this.setState({
+        startDate: date
+      });
+    }
 
   render(){
-    const {candidate} = this.state;
+
+    const {candidate, data} = this.state;
 
     return(
           <div>
@@ -75,10 +87,11 @@ class Details extends React.Component {
                         classname="form-control"
                         name="interviewDate"
                         id="interviewDateId"
-                        value = {this.state.interviewDate}
+                        value = {data ? data.interviewDate : this.state.interviewDate}
                         required
                         onChange = {this.handleOnChange}
                     />
+
 
               </div>
                   <div className="form-group required details-width">
@@ -89,7 +102,7 @@ class Details extends React.Component {
                         classname="form-control"
                         name="interviewerName"
                         id="interviewerId"
-                        value = {this.state.interviewerName}
+                        value = {data ? data.interviewerName : this.state.interviewerName }
                         maxLength="20"
                         required
                         onChange = {this.handleOnChange}

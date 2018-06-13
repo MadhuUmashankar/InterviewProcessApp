@@ -5,6 +5,8 @@ class Impression extends React.Component {
     super(props)
       this.state = {
         candidateImpression: '',
+        candidate: props.candidate,
+        data:props.data
       };
       this.handleOnChange = this.handleOnChange.bind(this);
   }
@@ -17,13 +19,16 @@ class Impression extends React.Component {
   }
 
   render() {
+    const {candidate, data, candidateImpression} = this.state
+
     return(
       <div className="container-fluid border">
         <div className="row header">
           <div className="col-sm-6"><label className="experience-label">Evaluator impression: 10%</label></div>
           <div className="col-sm-4">
               <div className="form-group">
-                 <select className="form-control" id="experience" onChange={this.handleOnChange}>
+                 <select className="form-control" id="impression" onChange={this.handleOnChange}
+                 value={data ? data.impression : this.state.candidateImpression}>
                    <option>Select</option>
                      <option>0</option>
                      <option>2</option>

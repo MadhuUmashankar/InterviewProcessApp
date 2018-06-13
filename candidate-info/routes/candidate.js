@@ -29,7 +29,7 @@ router.get('/upload', function (req, res, next) {
 
 
 // Get All IA Info
-router.get('/newIAForm', function(req, res, next){
+router.get('/candidateInfo/newIAForm', function(req, res, next){
     db.evaluationSheetInformationTables.find(function(err, evaluationSheetInformationTables){
         if(err){
             res.send(err);
@@ -37,6 +37,32 @@ router.get('/newIAForm', function(req, res, next){
         res.json(evaluationSheetInformationTables);
     });
 });
+
+
+// Get single IA Info
+router.get('/candidateInfo/newIAForm/:id', function(req, res, next){
+  console.log(req.params.id)
+    db.evaluationSheetInformationTables.findOne({candidateID: mongojs.ObjectId(req.params.id)}, function(err, evaluator){
+        if(err){
+            res.send(err);
+        }
+        res.json(evaluator);
+    });
+});
+
+
+// Get single IA Info
+// router.get('/candidateInfo/IAFormByCandidateId/:id', function(req, res, next){
+//   console.log(req.params.id)
+//     db.evaluationSheetInformationTables.findOne({candidateID: req.params.id}, function(err, evaluator){
+//         if(err){
+//             res.send(err);
+//         }
+//         res.json(evaluationSheetInformationTables);
+//     });
+// });
+
+
 
 // Get Single Task
 router.get('/candidateInfo/:id', function(req, res, next){
@@ -147,7 +173,7 @@ router.put('/candidateInfo/:id', function(req, res, next){
 });
 
 //Save IA Form Details Values
-router.post('/newIAForm', function(req, res, next){
+router.post('/candidateInfo/newIAForm', function(req, res, next){
     var evaluator = req.body;
     console.log('inside axios',req.body);
     // if(!evaluator.candidateName){
@@ -163,6 +189,31 @@ router.post('/newIAForm', function(req, res, next){
             res.json(evaluator);
         });
     // }
+});
+
+
+
+// Update IA Form
+router.put('/candidateInfo/newIAForm/:id', function(req, res, next){
+    var evaluator = req.body;
+    var updateIAForm = {};
+    console.log('inside db evaluator', evaluator)
+    if(evaluator){
+        updateIAForm = evaluator;
+    }
+    if(!updateIAForm){
+        res.status(400);
+        res.json({
+            "error":"Bad Data"
+        });
+    } else {
+        db.evaluationSheetInformationTables.update({_id: mongojs.ObjectId(req.params.id)},updateIAForm, function(err, evaluator){
+            if(err){
+                res.send(err);
+            }
+            res.json(evaluator);
+        });
+    }
 });
 
 module.exports = router;

@@ -8,7 +8,9 @@ class Summary extends React.Component {
         interviewComments:'',
         observations:'',
         technicalLevel:'',
-        projectLevelComments:''
+        projectLevelComments:'',
+        candidate: props.candidate,
+        data:props.data
       };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.onSummarySave = this.onSummarySave.bind(this);
@@ -52,6 +54,8 @@ class Summary extends React.Component {
     }
 
   render() {
+    const {candidate, data, interviewComments, observations, technicalLevel, projectLevelComments } = this.state
+
     return (
       <div className="container-fluid border">
         <div className="row header">
@@ -62,21 +66,21 @@ class Summary extends React.Component {
           <div className="col-sm-4">Interviewers comments regarding the candidate, strong points, weak points</div>
             <div className="col-sm-8">
               <textarea rows="4" cols="50" onChange = {this.handleOnChange} name="interviewComments"
-              id="interviewCommentsId" value ={this.state.interviewComments} ></textarea>
+              id="interviewCommentsId" value ={data ? (data.summaryData ? data.summaryData.interviewComments : {}) : interviewComments} ></textarea>
             </div>
         </div>
         <div className="row">
           <div className="col-sm-4">Other observations (additional comments regarding candidates attitude, potential)</div>
             <div className="col-sm-8">
               <textarea rows="4" cols="50" onChange = {this.handleOnChange} name="observations"
-              id="observationsId" value ={this.state.observations} ></textarea>
+              id="observationsId" value ={data ? (data.summaryData ? data.summaryData.observations : {}) : observations}></textarea>
             </div>
         </div>
         <div className="row">
           <div className="col-sm-4">Technical level</div>
           <div className="col-sm-8"><div className="form-group experience-width">
              <select className="form-control" id="experience" onChange = {this.handleOnChange} name="technicalLevel"
-             id="technicalLevelId" value ={this.state.technicalLevel}>
+             id="technicalLevelId" value ={data ? (data.summaryData ? data.summaryData.technicalLevel : {}) : technicalLevel}>
                <option>Select</option>
                  <option>Junior 1</option>
                  <option>Junior 2</option>
@@ -97,7 +101,7 @@ class Summary extends React.Component {
           <div className="col-sm-4">On what type of project(s) or role(s) do you think this candidate would fit best?</div>
           <div className="col-sm-8">
             <textarea rows="2" cols="50" onChange = {this.handleOnChange} name="projectLevelComments"
-            id="projectLevelCommentsId" value ={this.state.projectLevelComments}></textarea>
+            id="projectLevelCommentsId" value ={data ? (data.summaryData ? data.summaryData.projectLevelComments : {}) : projectLevelComments}></textarea>
           </div>
         </div>
       </div>

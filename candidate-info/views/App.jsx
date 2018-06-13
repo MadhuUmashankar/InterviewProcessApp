@@ -20,7 +20,7 @@ class App extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-        this.handleView = this.handleView.bind(this);       
+        this.handleView = this.handleView.bind(this);
     }
     loadDetailsFromServer() {
         axios.get(this.props.url)
@@ -37,8 +37,8 @@ class App extends Component {
             this.setState({ data: newCandidate });
              let formData = new FormData();
             formData.append('selectedFile', record.selectedFile);
-         
-           axios.all([  
+
+           axios.all([
             axios.post(this.props.url+'/upload', formData),
             axios.post(this.props.url+'/newCandidate', record),
            ])
@@ -52,15 +52,15 @@ class App extends Component {
 
     handleDelete(id) {
         var {data} = this.state;
-        
+
         data.map((candidate, index) => {
             if(id === candidate._id) {
                 data.splice(index,1);
                 this.setState({ data });
-            }      
+            }
         })
         axios.delete(`${this.props.url}/${id}`)
-            .then(res => {                
+            .then(res => {
                 console.log('Record deleted');
             })
             .catch(err => {
@@ -68,7 +68,7 @@ class App extends Component {
             });
     }
 
-    handleView(status, candidate) {        
+    handleView(status, candidate) {
         var { modalLabelView } = this.state;
         this.setState({ show: status, modalLabelView: true, candidate });
     }
@@ -87,7 +87,7 @@ class App extends Component {
         setInterval(this.loadTodosFromServer, this.props.pollInterval);
     }
 
- 
+
     handleClose() {
         this.setState({ show: false });
     }
@@ -99,16 +99,17 @@ class App extends Component {
     handleSearch(e) {
         this.setState({searchKey:e.target.value})
     }
-    
+
 
    render() {
     const {data, searchKey, candidate, modalLabelView } = this.state;
+    let url = this.props.url;
 
     return (
       <div className="App">
         <div className="App-header">
             <div className="">
-                <h1> Candidate Details </h1> 
+                <h1> Candidate Details </h1>
             </div>
             <div>
                 <Button bsStyle="primary" bsSize="large" onClick={this.handleShow}>
@@ -117,7 +118,7 @@ class App extends Component {
             </div>
         </div>
         <div className="search-container">
-            <label className="control-label">Candidate Search:</label>  
+            <label className="control-label">Candidate Search:</label>
             <InputBox
                 type="text"
                 placeholder="Search..."
@@ -125,7 +126,7 @@ class App extends Component {
                 onChange={this.handleSearch}
             />
         </div>
-            
+
 
         <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
@@ -139,9 +140,10 @@ class App extends Component {
 
         <CandidateInfoList
             onDelete={ this.handleDelete }
-            onModalView={this.handleView }            
+            onModalView={this.handleView }
             data={ data }
-            searchKey= { searchKey }/>
+            searchKey= { searchKey }
+            url = {url}/>
       </div>
     );
   }
