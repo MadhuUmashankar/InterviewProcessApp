@@ -63,9 +63,7 @@ export default class CandidateForm extends React.Component{
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log("In handle Submit");
-        console.log(this.state.selectedFile);
-        const {firstname, lastname, skills, email, phone, city,selectedFile_name,selectedFile} = this.state;
+         const {firstname, lastname, skills, email, phone, city,selectedFile_name,selectedFile} = this.state;
         const {onHandleSubmit} = this.props;
 
         if (!firstname || !lastname || !skills || !email || !phone || !city || !selectedFile_name || !selectedFile) {
@@ -82,7 +80,6 @@ export default class CandidateForm extends React.Component{
     handleUpdate(e, candidateId,candidate) {
         e.preventDefault();
         const {handleUpdate} = this.props;
-        console.log(candidate);
         handleUpdate(candidateId, candidate);
     }
 
@@ -92,8 +89,6 @@ export default class CandidateForm extends React.Component{
             selectedFile : event.target.files[0],
             selectedFile_name : event.target.files[0].name
          })
-         console.log("UPload file mein");
-         console.log(this.state.selectedFile);
         }
 
 

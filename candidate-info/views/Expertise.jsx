@@ -21,8 +21,6 @@ class Expertise extends React.Component {
     var abc = function(event) {
       const { name, value } = event.target;
       let rows = this.state.data.length != 0 ? [...this.state.data.rows] : [{}];
-    //   const rowsNew = this.state.data.rows;
-    //   let rows = rowsNew == undefined ? [{}] : [...rowsNew];
 
       rows[idx] =Object.assign({},rows[idx],{[name]:value}) ;
 
@@ -39,11 +37,8 @@ class Expertise extends React.Component {
     e.preventDefault();
     const item = {};
      const data = this.state.data;
-  //   console.log('data ' , data)
-     const rowsNew = data ? data.rows : [{}];
-  //  console.log("rowsnew",rowsNew1)
-   //let rows = rowsNew1 == undefined ? [{}] : [...rowsNew1];
-    this.setState({data:{rows: [...rowsNew, item]}});
+     const rowsNew = data.rows.length > 0 ? data.rows : [{}];
+      this.setState({data:{rows: [...rowsNew, item]}});
   };
 
 
@@ -52,33 +47,16 @@ class Expertise extends React.Component {
   };
 
   onExpertiseSave(rows=[]) {
-console.log(this.state);
     const {onExpertiseSave} = this.props;
-
-    console.log("In Save expretise" ,rows);
-
-
     if (!rows) {return;}
-    console.log('rows', rows)
     onExpertiseSave(rows);
   }
 
   render(){
     let {candidate, testId, data } = this.state;
-    console.log("In expertise data" , data);
-  //  console.log("In expertise data rows" , data.rows);
-  /*  if(data === undefined){
-      data = [];
-      console.log("Inside undefined data" , data);
-    //  var rows = [
-      //      {expertisedArea: "", juniorMinimumScore: "", midMinimumScore: "", seniorMinimumScore: "", avgScore: ""}
-      //            ];
-      data.push(rows);
-    }*/
-   let rowsData=data && data.rows;
+    let rowsData = data && data.rows;
     const  rows = !rowsData ? [{}] : rowsData;
-  //      console.log('details in expertise======================', data  )
-    //    console.log('details in rows', rows);
+
     return (
       <div>
         <div className="container-fluid border">

@@ -19,16 +19,10 @@ class EvaluationForm extends Component {
 
   handleSubmit(e) {
        e.preventDefault();
-      console.log("In handle Submit");
-      // const {onHandleSubmit} = this.props;
-      //
-      //  onHandleSubmit();
-
       this.handleDetailsData(details);
   }
 
   handleDetailsData(details) {
-    console.log('inside here deatils')
 
   }
 

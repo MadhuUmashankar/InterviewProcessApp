@@ -75,8 +75,7 @@ class App extends Component {
 
     handleUpdate(id, record) {
         this.setState({ show: false });
-        console.log(record);
-        //sends the new candidate id and new candidate to our api
+          //sends the new candidate id and new candidate to our api
         axios.put(`${this.props.url}/${id}`, record)
             .catch(err => {
                 console.log(err);

@@ -36,23 +36,18 @@ class Evaluation extends Component {
     this.handleSummaryData = this.handleSummaryData.bind(this);
    }
 
-   loadDetailsFromServerForIASheet(id) {
+   loadDetailsFromServerForIASheet() {
      let iaUrl = this.state.url + '/newIAForm';
-       // axios.get(iaUrl)
-       //     .then(res => {
-       //       console.log('response from server', res.data);
-       //         this.setState({ data: res.data });
-       //     })
-       axios.get(`${iaUrl}/${id}`)
-      .then(res => {
-        console.log('response from server in get ia click', res.data);
-          this.setState({ data: res.data });
-      })
+       axios.get(iaUrl)
+           .then(res => {
+             console.log('response from server', res.data);
+               this.setState({ data: res.data });
+           })
    }
 
 
   handleClose() {
-      this.setState({ show: false });
+    this.setState({ show: false });
   }
 
   handleShow() {
@@ -60,8 +55,7 @@ class Evaluation extends Component {
   }
 
   componentDidMount() {
-      this.loadDetailsFromServerForIASheet(this.state.candidate._id);
-      setInterval(this.loadTodosFromServer, this.props.pollInterval);
+      this.loadDetailsFromServerForIASheet();
   }
 
   handleDetailsData(details) {
@@ -86,14 +80,19 @@ class Evaluation extends Component {
 
   handleUpdate(e, id, record) {
     e.preventDefault();
+    const {detailsData, candidate, experience, expertiseData, impression, summaryData} = this.state;
+    const fullname = candidate.firstname + " " + candidate.lastname;
+    const updatedrecord = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData})
+
     let iaUrl = this.props.url + '/newIAForm';
-      this.setState({ show: false });
-      console.log('inside update------------',id,record,iaUrl);
+    this.setState({ show: false });
+
       //sends the new candidate id and new candidate to our api
-      axios.put(`${iaUrl}/${id}`, record)
+      axios.put(`${iaUrl}/${id}`, updatedrecord)
           .catch(err => {
               console.log(err);
           })
+    this.loadDetailsFromServerForIASheet();
   }
 
 
@@ -102,7 +101,7 @@ class Evaluation extends Component {
     const {detailsData, candidate, experience, expertiseData, impression, summaryData} = this.state;
     // Candidate IA Form data
     const fullname = candidate.firstname + " " + candidate.lastname;
-    const record = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, {candidateID: candidate._id})
+    const record = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData})
     this.setState({ show: false });
       if(record) {
           let records = this.state.data;
@@ -115,6 +114,7 @@ class Evaluation extends Component {
                   this.setState({ data: records });
               });
       }
+    this.loadDetailsFromServerForIASheet();
   }
 
   render() {
@@ -155,7 +155,7 @@ class Evaluation extends Component {
                     <Summary onSummarySave= {this.handleSummaryData} candidate={candidate} data={data[index]} />
                       </div>
                     <Button className="move-right" type="submit">Save</Button>
-                    <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, candidate._id, data)}}>Update</Button>
+                    <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, data[index]._id, data)}}>Update</Button>
                     <Button onClick={this.handleClose}>Close</Button>
 
             </form>

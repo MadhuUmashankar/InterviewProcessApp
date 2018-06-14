@@ -17,17 +17,6 @@ router.get('/candidateInfo', function(req, res, next){
 });
 
 
-////
-/*
-router.get('/upload', function (req, res, next) {
-    var filePath = "/upload"; // Or format the path using the `id` rest param
-    var fileName = "jd"; // The default name the browser will use
-
-    res.download(filePath, fileName);
-}); */
-///
-
-
 // Get All IA Info
 router.get('/candidateInfo/newIAForm', function(req, res, next){
     db.evaluationSheetInformationTables.find(function(err, evaluationSheetInformationTables){
@@ -41,27 +30,14 @@ router.get('/candidateInfo/newIAForm', function(req, res, next){
 
 // Get single IA Info
 router.get('/candidateInfo/newIAForm/:id', function(req, res, next){
-  console.log(req.params.id)
-    db.evaluationSheetInformationTables.findOne({candidateID: mongojs.ObjectId(req.params.id)}, function(err, evaluator){
+
+    db.evaluationSheetInformationTables.findOne({_id: mongojs.ObjectId(req.params.id)}, function(err, evaluator){
         if(err){
             res.send(err);
         }
         res.json(evaluator);
     });
 });
-
-
-// Get single IA Info
-// router.get('/candidateInfo/IAFormByCandidateId/:id', function(req, res, next){
-//   console.log(req.params.id)
-//     db.evaluationSheetInformationTables.findOne({candidateID: req.params.id}, function(err, evaluator){
-//         if(err){
-//             res.send(err);
-//         }
-//         res.json(evaluationSheetInformationTables);
-//     });
-// });
-
 
 
 // Get Single Task
@@ -74,19 +50,15 @@ router.get('/candidateInfo/:id', function(req, res, next){
     });
 });
 
-//Save Candidate Info
+//Save Candidate Resume 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, './upload');
     }
     ,
     filename: function (req, file, cb) {
-
         const newFilename = `${(file.originalname)}`;
-    //  const newFilename = `${uuid()}${path.extname(file.originalname)}`;
-     // const newFilename = `${path.extname(file.originalname)}`;
-      cb(null, newFilename);
-      //cb(null, file.fieldname + '-' + Date.now())
+       cb(null, newFilename);
     }
   })
 
@@ -94,17 +66,14 @@ var storage = multer.diskStorage({
 
 
 router.post('/candidateInfo/upload', upload.single('selectedFile'), (req, res) => {
-    // ram code const selectedFile = req.selectedFile;
     res.send();
 })
 
-//code
-
+//IA form 
 
 router.post('/candidateInfo/newCandidate', function(req, res, next){
     var candidate = req.body;
-    console.log("yaha aya hai");
-    //console.log(req.body);
+
     if(!candidate.firstname || !(candidate.lastname + '')){
         res.status(400);
         res.json({
@@ -175,20 +144,14 @@ router.put('/candidateInfo/:id', function(req, res, next){
 //Save IA Form Details Values
 router.post('/candidateInfo/newIAForm', function(req, res, next){
     var evaluator = req.body;
-    console.log('inside axios',req.body);
-    // if(!evaluator.candidateName){
-    //     res.status(400);
-    //     res.json({
-    //         "error": "Bad Data"
-    //     });
-    // } else {
-        db.evaluationSheetInformationTables.save(evaluator, function(err, evaluator){
-            if(err){
-                res.send(err);
-            }
-            res.json(evaluator);
-        });
-    // }
+
+    db.evaluationSheetInformationTables.save(evaluator, function(err, evaluator){
+        if(err){
+            res.send(err);
+        }
+        res.json(evaluator);
+    });
+
 });
 
 
@@ -196,18 +159,34 @@ router.post('/candidateInfo/newIAForm', function(req, res, next){
 // Update IA Form
 router.put('/candidateInfo/newIAForm/:id', function(req, res, next){
     var evaluator = req.body;
-    var updateIAForm = {};
-    console.log('inside db evaluator', evaluator)
-    if(evaluator){
-        updateIAForm = evaluator;
+    let updatedIA = {};
+
+    if(evaluator.interviewDate){
+        updatedIA.interviewDate = evaluator.interviewDate;
     }
-    if(!updateIAForm){
+    if(evaluator.interviewerName){
+        updatedIA.interviewerName = evaluator.interviewerName;
+    }
+    if(evaluator.experience){
+        updatedIA.experience = evaluator.experience;
+    }
+    if(evaluator.rows){
+        updatedIA.rows = evaluator.rows;
+    }
+    if(evaluator.impression){
+        updatedIA.impression = evaluator.impression;
+    }
+    if(evaluator.summaryData){
+        updatedIA.summaryData = evaluator.summaryData;
+    }
+ 
+    if(!updatedIA){
         res.status(400);
         res.json({
             "error":"Bad Data"
         });
     } else {
-        db.evaluationSheetInformationTables.update({_id: mongojs.ObjectId(req.params.id)},updateIAForm, function(err, evaluator){
+        db.evaluationSheetInformationTables.update({_id: mongojs.ObjectId(req.params.id)},updatedIA, function(err, evaluator){
             if(err){
                 res.send(err);
             }

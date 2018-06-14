@@ -1,11 +1,11 @@
 import React from 'react';
 import InputBox from './InputBox';
 import './Details.scss';
-import DatePicker from 'react-datepicker';
-import moment from 'moment';
+//import DatePicker from 'react-datepicker';
+//import moment from 'moment';
 // import 'react-datepicker/dist/react-datepicker.css';
 // require('react-datepicker/dist/react-datepicker.css');
-// C:\Users\madhurya.u\Desktop\madhu\InterviewProcessApp\candidate-info\node_modules\react-datepicker\dist\react-datepicker-cssmodules.css
+// C:\Users\madhurya.u\Desktop\madhu\InterviewProcessApp\candidate-info\node_modules\react-datepicker\dist\-cssmodules.css
 class Details extends React.Component {
   constructor(props) {
     super(props)
@@ -14,8 +14,7 @@ class Details extends React.Component {
         interviewDate: '',
         interviewerName: '',
         candidate: props.candidate,
-        data:props.data,
-        startDate: moment()
+        data:props.data
       };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -47,16 +46,16 @@ class Details extends React.Component {
     const {interviewDate, interviewerName} = this.state;
     const {onDetailsSave} = this.props;
 
-    if (!interviewDate || !interviewerName) {
+    if (!interviewDate && !interviewerName) {
         return;
     }
     onDetailsSave({interviewDate, interviewerName});
   }
 
   handleDateChange(date) {
-      this.setState({
-        startDate: date
-      });
+      // this.setState({
+      //   startDate: date
+      // });
     }
 
   render(){
