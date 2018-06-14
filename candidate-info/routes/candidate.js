@@ -69,7 +69,19 @@ router.post('/candidateInfo/upload', upload.single('selectedFile'), (req, res) =
     res.send();
 })
 
-//IA form 
+ 
+
+
+// Delete IA form 
+router.delete('/candidateInfo/newIAForm/:id', function(req, res, next){
+    db.evaluationSheetInformationTables.remove({_id: mongojs.ObjectId(req.params.id)}, function(err, IAdata){
+        if(err){
+            res.send(err);
+        }
+        res.json(IAdata);
+    });
+});
+
 
 router.post('/candidateInfo/newCandidate', function(req, res, next){
     var candidate = req.body;

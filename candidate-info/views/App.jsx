@@ -12,7 +12,7 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { data: [], show: false, searchKey:"", modalLabelView: false, candidate:{} };
+        this.state = { data: [], show: false, searchKey:"", modalLabelView: false, candidate:{}, IAData:[]};
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.loadDetailsFromServer = this.loadDetailsFromServer.bind(this);
@@ -22,10 +22,19 @@ class App extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleView = this.handleView.bind(this);
     }
+
     loadDetailsFromServer() {
         axios.get(this.props.url)
             .then(res => {
                 this.setState({ data: res.data });
+            })
+    }
+
+    loadDetailsFromServerForIASheet() {
+        axios.get(this.props.IAurl)
+            .then(res => {
+            console.log('response from server', res.data);
+                this.setState({ IAData: res.data });
             })
     }
 
@@ -43,29 +52,36 @@ class App extends Component {
             axios.post(this.props.url+'/newCandidate', record),
            ])
            .catch(err => {
-            console.error(err);
-            this.setState({ data: records });
-        })
-           }
+                console.error(err);
+                this.setState({ data: records });
+            })
+        }
+        this.loadDetailsFromServer();
     }
 
 
     handleDelete(id) {
-        var {data} = this.state;
+        var {data, IAData} = this.state;
+
+        let deleteIAFormID = "";
 
         data.map((candidate, index) => {
             if(id === candidate._id) {
                 data.splice(index,1);
+                deleteIAFormID = IAData[index]._id;
                 this.setState({ data });
             }
         })
-        axios.delete(`${this.props.url}/${id}`)
-            .then(res => {
-                console.log('Record deleted');
-            })
-            .catch(err => {
-                console.error(err);
-            });
+        axios.all([
+            axios.delete(`${this.props.url}/${id}`),
+            axios.delete(`${this.props.IAurl}/${deleteIAFormID}`)                
+        ]).then(res => {
+            console.log('Record deleted');
+        })
+        .catch(err => {
+            console.error(err);
+        })
+        this.loadDetailsFromServer();
     }
 
     handleView(status, candidate) {
@@ -80,10 +96,11 @@ class App extends Component {
             .catch(err => {
                 console.log(err);
             })
+        this.loadDetailsFromServer();
     }
     componentDidMount() {
         this.loadDetailsFromServer();
-        setInterval(this.loadTodosFromServer, this.props.pollInterval);
+        this.loadDetailsFromServerForIASheet()
     }
 
 
@@ -98,7 +115,6 @@ class App extends Component {
     handleSearch(e) {
         this.setState({searchKey:e.target.value})
     }
-
 
    render() {
     const {data, searchKey, candidate, modalLabelView } = this.state;

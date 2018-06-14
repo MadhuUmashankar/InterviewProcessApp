@@ -72,7 +72,7 @@ class Expertise extends React.Component {
 
                   <div className="col-sm-6">
                       <label className="experience-label">Calculated Score</label>
-                      <label>{overallAvgScore}</label>
+                      <label className="overallScore">{overallAvgScore}</label>
                   </div>
             </div>
             <div>
@@ -90,7 +90,7 @@ class Expertise extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {rows.length && rows.map((item, idx) => (
+                    {Object.keys(rows).length > 0 && rows.map((item, idx) => (
                       <tr id="addr0" key={idx}>
                         <td>
                         <InputBox
