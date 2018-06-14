@@ -83,7 +83,7 @@ class Expertise extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {rows && rows.map((item, idx) => (
+                    {Object.keys(rows).length > 0 && rows.map((item, idx) => (
                       <tr id="addr0" key={idx}>
                         <td>
                         <InputBox
