@@ -77,6 +77,7 @@ class Details extends React.Component {
                         maxLength="15"
                         required
                         onChange = {this.handleOnChange}
+                        readOnly = "true"
                     />
                   </div>
                   <div className="form-group  required details-width padding">
