@@ -20,16 +20,12 @@ class Expertise extends React.Component {
 
  handleInputChange(event, idx) {
    const {IAdata} = this.state;
-    var abc = function(event) {
-      const { name, value } = event.target;
-      let rows = Object.keys(IAdata).length > 0 ? [...IAdata.rows] : [{}];
-      rows[idx] = Object.assign({},rows[idx],{[name]:value}) ;
-      this.setState({IAdata:{rows:rows}}, ()=> {
-          this.onExpertiseSave(rows);
-      });
-    }.bind(this);
-
-    return abc(event);
+  const { name, value } = event.target;
+  let rows = Object.keys(IAdata).length > 0 ? [...IAdata.rows] : [{}];
+  rows[idx] = Object.assign({},rows[idx],{[name]:value}) ;
+  this.setState({IAdata:{rows:rows}}, ()=> {
+      this.onExpertiseSave(rows);
+  });
   };
 
 
@@ -37,8 +33,8 @@ class Expertise extends React.Component {
     e.preventDefault();
     const item = {};
     const {IAdata} = this.state;
-     const rowsNew = IAdata.rows.length > 0 ? IAdata.rows : [{}];
-      this.setState({IAdata:{rows: [...rowsNew, item]}});
+    const rowsNew = IAdata.rows.length > 0 ? IAdata.rows : [{}];
+    this.setState({IAdata:{rows: [...rowsNew, item]}});
   };
 
 
@@ -48,11 +44,22 @@ class Expertise extends React.Component {
     this.setState({IAdata:{rows: IAdata.rows.slice(0, -1)}});
   };
 
-  onExpertiseSave(rows=[]) {
+  onExpertiseSave(rows) {
     const {onExpertiseSave} = this.props;
     const {overallAvgScore} = this.state;
     if (!rows) {return;}
     onExpertiseSave(rows, overallAvgScore);
+  }
+
+  componentDidMount() {
+    const { data, onExpertiseSave } = this.props;
+      if (data != undefined) {
+        if(Object.keys(data).length > 0) {
+        this.setState({IAdata:{rows: data.rows}},() => {
+          onExpertiseSave(data.rows)
+        });
+      } 
+    }
   }
 
   render(){
