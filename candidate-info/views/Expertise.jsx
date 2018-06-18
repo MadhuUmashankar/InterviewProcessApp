@@ -88,11 +88,11 @@ class Expertise extends React.Component {
                   id="tab_logic">
                   <thead className="color">
                     <tr>
-                        <th className="col-sm-2 text-center">Area of Expertise</th>
-                        <th className="col-sm-2 text-center">Junior Minimum</th>
-                        <th className="col-sm-2 text-center">Mid Minimum</th>
-                        <th className="col-sm-2 text-center">Senior Minimum</th>
-                        <th className="col-sm-2 text-center">Score</th>
+                        <th className="col-sm-2 text-center"><span className="control-label">Area of Expertise</span></th>
+                        <th className="col-sm-2 text-center"><span className="control-label">Junior Minimum</span></th>
+                        <th className="col-sm-2 text-center"><span className="control-label">Mid Minimum</span></th>
+                        <th className="col-sm-2 text-center"><span className="control-label">Senior Minimum</span></th>
+                        <th className="col-sm-2 text-center"><span className="control-label">Score</span></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -101,12 +101,13 @@ class Expertise extends React.Component {
                         <td>
                         <InputBox
                             type="text"
-                            classname="form-control"
+                            classname="form-control "
                             name="expertisedArea"
                             id="candidateExpertiseId"
                             value={item.expertisedArea}
                             autoFocus="true"
                             maxLength="10"
+                            required
                             onChange = {(e)=>this.handleInputChange(e,idx)}
                         />
                         </td>

@@ -83,7 +83,6 @@ class Evaluation extends Component {
 
     const {detailsData, candidate, experience, expertiseData, impression, summaryData, data} = this.state;
     const fullname = candidate.firstname + " " + candidate.lastname;
-    const IAdata = data[this.props.index];
     const updatedrecord = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData})
 
     let iaUrl = this.props.url + '/newIAForm';
@@ -136,15 +135,14 @@ class Evaluation extends Component {
             <form  onSubmit= {this.handleSubmitIAForm}>
                   <div className="margin-small">
                     <Details onDetailsSave= {this.handleDetailsData} candidate={candidate} data={data[index]} />
-
                   </div>
                   <div className="margin-small">
                    <Note onNoteSave= {this.handleNoteData} candidate={candidate} data={data[index]} />
-                 </div>
-                 <div className="margin-small">
+                  </div>
+                  <div className="margin-small">
                    <Expertise onExpertiseSave= {this.handleExpertiseData} candidate={candidate} data={data[index]} />
-                 </div>
-                 <div className="margin-small">
+                  </div>
+                  <div className="margin-small">
                     <Impression onImpressionSave= {this.handleImpressionSave} candidate={candidate} data={data[index]} />
                   </div>
 
@@ -156,8 +154,15 @@ class Evaluation extends Component {
 
                     <Summary onSummarySave= {this.handleSummaryData} candidate={candidate} data={data[index]} />
                       </div>
-                    <Button className="move-right" type="submit">Save</Button>
-                    <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, data[index]._id, data)}}>Update</Button>
+
+                    {
+                      data[index] && 
+                      <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, data[index]._id, data)}}>Update</Button>
+                    }
+                    {
+                      !data[index] && <Button className="move-right" type="submit">Save</Button>
+                    }
+                    
                     <Button onClick={this.handleClose}>Close</Button>
 
             </form>

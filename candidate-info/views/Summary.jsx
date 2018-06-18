@@ -79,21 +79,21 @@ class Summary extends React.Component {
         <div className="row interview-comments">
           <div className="col-sm-4">Interviewers comments regarding the candidate, strong points, weak points</div>
             <div className="col-sm-8">
-              <textarea rows="4" cols="50" onChange = {this.handleOnChange} name="interviewComments"
+              <textarea required rows="4" cols="50" onChange = {this.handleOnChange} name="interviewComments"
               id="interviewCommentsId" value ={interviewComments} ></textarea>
             </div>
         </div>
         <div className="row">
           <div className="col-sm-4">Other observations (additional comments regarding candidates attitude, potential)</div>
             <div className="col-sm-8">
-              <textarea rows="4" cols="50" onChange = {this.handleOnChange} name="observations"
+              <textarea required rows="4" cols="50" onChange = {this.handleOnChange} name="observations"
               id="observationsId" value ={observations}></textarea>
             </div>
         </div>
         <div className="row">
           <div className="col-sm-4">Technical level</div>
           <div className="col-sm-8"><div className="form-group experience-width">
-             <select className="form-control" id="experience" onChange = {this.handleOnChange} name="technicalLevel"
+             <select required className="form-control" id="experience" onChange = {this.handleOnChange} name="technicalLevel"
              id="technicalLevelId" value ={technicalLevel}>
                <option>Select</option>
                  <option>Junior 1</option>
@@ -114,7 +114,7 @@ class Summary extends React.Component {
         <div className="row">
           <div className="col-sm-4">On what type of project(s) or role(s) do you think this candidate would fit best?</div>
           <div className="col-sm-8">
-            <textarea rows="2" cols="50" onChange = {this.handleOnChange} name="projectLevelComments"
+            <textarea required rows="2" cols="50" onChange = {this.handleOnChange} name="projectLevelComments"
             id="projectLevelCommentsId" value ={projectLevelComments}></textarea>
           </div>
         </div>

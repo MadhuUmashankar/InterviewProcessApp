@@ -38,7 +38,7 @@ class Impression extends React.Component {
           <div className="col-sm-6"><label className="experience-label">Evaluator impression: 10%</label></div>
           <div className="col-sm-4">
               <div className="form-group">
-                 <select className="form-control" id="impression" onChange={this.handleOnChange}
+                 <select required className="form-control" id="impression" onChange={this.handleOnChange}
                  value={candidateImpression}>
                    <option>Select</option>
                      <option>0</option>

@@ -1,3 +1,10 @@
 .overallScore{
   margin-left: 15px;
 }
+.expertised-area {
+  .control-label:after {
+    content: "*";
+    color: red;
+    padding: 5px;
+  }
+}
