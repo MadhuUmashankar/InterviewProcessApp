@@ -10,7 +10,7 @@ class Summary extends React.Component {
         technicalLevel:'',
         projectLevelComments:'',
         candidate: props.candidate,
-        data:props.data
+        IAdata:props.data || {}
       };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.onSummarySave = this.onSummarySave.bind(this);
@@ -47,14 +47,28 @@ class Summary extends React.Component {
       const {interviewComments, observations, technicalLevel, projectLevelComments} = this.state;
       const {onSummarySave} = this.props;
 
-      if (!interviewComments || !observations || !technicalLevel || !projectLevelComments) {
-          return;
-      }
       onSummarySave({interviewComments, observations, technicalLevel, projectLevelComments});
     }
 
+    componentDidMount() {
+      const { data } = this.props;
+      if (data != undefined) {
+        if (Object.keys(data).length > 0) {
+          if(Object.keys(data.summaryData).length > 0) {
+            const comments = data.summaryData.interviewComments ? data.summaryData.interviewComments : "";
+            const observations =  data.summaryData.observations ? data.summaryData.observations : "";
+            const level = data.summaryData.technicalLevel ? data.summaryData.technicalLevel : "";
+            const projectComments = data.summaryData.projectLevelComments ? data.summaryData.projectLevelComments : "";
+            this.setState({interviewComments: comments, technicalLevel: level, projectLevelComments:projectComments, observations},() => {
+              this.onSummarySave();
+            });
+          }
+        }
+      }
+    }
+
   render() {
-    const {candidate, data, interviewComments, observations, technicalLevel, projectLevelComments } = this.state
+    const {candidate, IAdata, interviewComments, observations, technicalLevel, projectLevelComments } = this.state
 
     return (
       <div className="container-fluid border">
@@ -66,21 +80,21 @@ class Summary extends React.Component {
           <div className="col-sm-4">Interviewers comments regarding the candidate, strong points, weak points</div>
             <div className="col-sm-8">
               <textarea rows="4" cols="50" onChange = {this.handleOnChange} name="interviewComments"
-              id="interviewCommentsId" value ={data ? (data.summaryData ? data.summaryData.interviewComments : {}) : interviewComments} ></textarea>
+              id="interviewCommentsId" value ={interviewComments} ></textarea>
             </div>
         </div>
         <div className="row">
           <div className="col-sm-4">Other observations (additional comments regarding candidates attitude, potential)</div>
             <div className="col-sm-8">
               <textarea rows="4" cols="50" onChange = {this.handleOnChange} name="observations"
-              id="observationsId" value ={data ? (data.summaryData ? data.summaryData.observations : {}) : observations}></textarea>
+              id="observationsId" value ={observations}></textarea>
             </div>
         </div>
         <div className="row">
           <div className="col-sm-4">Technical level</div>
           <div className="col-sm-8"><div className="form-group experience-width">
              <select className="form-control" id="experience" onChange = {this.handleOnChange} name="technicalLevel"
-             id="technicalLevelId" value ={data ? (data.summaryData ? data.summaryData.technicalLevel : {}) : technicalLevel}>
+             id="technicalLevelId" value ={technicalLevel}>
                <option>Select</option>
                  <option>Junior 1</option>
                  <option>Junior 2</option>
@@ -101,7 +115,7 @@ class Summary extends React.Component {
           <div className="col-sm-4">On what type of project(s) or role(s) do you think this candidate would fit best?</div>
           <div className="col-sm-8">
             <textarea rows="2" cols="50" onChange = {this.handleOnChange} name="projectLevelComments"
-            id="projectLevelCommentsId" value ={data ? (data.summaryData ? data.summaryData.projectLevelComments : {}) : projectLevelComments}></textarea>
+            id="projectLevelCommentsId" value ={projectLevelComments}></textarea>
           </div>
         </div>
       </div>

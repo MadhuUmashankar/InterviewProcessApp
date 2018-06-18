@@ -5,8 +5,7 @@ class Impression extends React.Component {
     super(props)
       this.state = {
         candidateImpression: '',
-        candidate: props.candidate,
-        data:props.data
+        candidate: props.candidate
       };
       this.handleOnChange = this.handleOnChange.bind(this);
   }
@@ -16,6 +15,18 @@ class Impression extends React.Component {
     this.setState({candidateImpression: e.target.value},() => {
           onImpressionSave(this.state.candidateImpression);
     });
+  }
+
+  componentDidMount() {
+    const { data, onImpressionSave } = this.props;
+    if (data != undefined) {
+      if (Object.keys(data).length > 0) {
+        const impression = data.impression ? data.impression : "";
+        this.setState({candidateImpression: impression},() => {
+          onImpressionSave(this.state.candidateImpression);
+      });
+      }
+    }
   }
 
   render() {
@@ -28,7 +39,7 @@ class Impression extends React.Component {
           <div className="col-sm-4">
               <div className="form-group">
                  <select className="form-control" id="impression" onChange={this.handleOnChange}
-                 value={data ? data.impression : this.state.candidateImpression}>
+                 value={candidateImpression}>
                    <option>Select</option>
                      <option>0</option>
                      <option>2</option>

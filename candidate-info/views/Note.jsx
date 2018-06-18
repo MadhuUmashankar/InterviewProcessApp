@@ -7,21 +7,34 @@ class Note extends React.Component {
     super(props)
       this.state = {
         candidateExperience: '',
-        candidate: props.candidate,
-        data:props.data
+        candidate: props.candidate
       };
       this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   handleOnChange(e) {
     const {onNoteSave} = this.props;
+
     this.setState({candidateExperience: e.target.value},() => {
-          onNoteSave(this.state.candidateExperience);
+      onNoteSave(this.state.candidateExperience);
     });
+ 
+  }
+
+  componentDidMount() {
+    const { data, onNoteSave } = this.props;
+      if (data != undefined) {
+        if(Object.keys(data).length > 0) {
+        const experience = data.experience ? data.experience : "";
+        this.setState({candidateExperience: experience},() => {
+          onNoteSave(this.state.candidateExperience)
+        });
+      } 
+    }
   }
 
   render(){
-    const {candidate, data, candidateExperience} = this.state
+    const {candidate, candidateExperience} = this.state
 
     return(
       <div className="container-fluid border">
@@ -30,7 +43,7 @@ class Note extends React.Component {
           <div className="col-sm-6">
               <div className="form-group">
                  <select className="form-control" id="experience" onChange={this.handleOnChange}
-                  value={data? data.experience : this.state.candidateExperience}>
+                  value={ candidateExperience }>
                    <option>Select</option>
                      <option>0</option>
                      <option>2</option>

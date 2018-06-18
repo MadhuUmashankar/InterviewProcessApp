@@ -8,7 +8,7 @@ class Expertise extends React.Component {
     this.state = {
         value: '',
         candidate: props.candidate,
-        data: props.data || [],
+        IAdata: props.data || {},
         testId:props.testId,
         overallAvgScore: '0'
   };
@@ -19,15 +19,14 @@ class Expertise extends React.Component {
 }
 
  handleInputChange(event, idx) {
+   const {IAdata} = this.state;
     var abc = function(event) {
       const { name, value } = event.target;
-      let rows = this.state.data.length != 0 ? [...this.state.data.rows] : [{}];
+      let rows = Object.keys(IAdata).length > 0 ? [...IAdata.rows] : [{}];
       rows[idx] = Object.assign({},rows[idx],{[name]:value}) ;
-      this.setState({data:{rows:rows}}, ()=> {
+      this.setState({IAdata:{rows:rows}}, ()=> {
           this.onExpertiseSave(rows);
       });
-
-      console.log('rows', rows);
     }.bind(this);
 
     return abc(event);
@@ -37,15 +36,16 @@ class Expertise extends React.Component {
   handleAddRow (e) {
     e.preventDefault();
     const item = {};
-     const data = this.state.data;
-     const rowsNew = data.rows.length > 0 ? data.rows : [{}];
-      this.setState({data:{rows: [...rowsNew, item]}});
+    const {IAdata} = this.state;
+     const rowsNew = IAdata.rows.length > 0 ? IAdata.rows : [{}];
+      this.setState({IAdata:{rows: [...rowsNew, item]}});
   };
 
 
   handleRemoveRow (e) {
     e.preventDefault();
-    this.setState({data:{rows: this.state.data.rows.slice(0, -1)}});
+    const {IAdata} = this.state;
+    this.setState({IAdata:{rows: IAdata.rows.slice(0, -1)}});
   };
 
   onExpertiseSave(rows=[]) {
@@ -56,10 +56,9 @@ class Expertise extends React.Component {
   }
 
   render(){
-    let {candidate, testId, data, overallAvgScore } = this.state;
-    let rowsData = data && data.rows;
-    const  rows = !rowsData ? [{}] : rowsData;
-    if(rowsData.length) {
+    let {candidate, testId, IAdata, overallAvgScore } = this.state;
+    let rows = Object.keys(IAdata).length > 0 ? IAdata.rows : [{}];
+    if(rows.length) {
       overallAvgScore=(rows.filter(item => item.avgScore)).map(item => item.avgScore).reduce((prev, next, iv) => { return +prev + +next}, 0);
       overallAvgScore = Math.round(overallAvgScore/(rows.length || 1))
     }

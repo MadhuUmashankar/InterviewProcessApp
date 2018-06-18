@@ -40,7 +40,7 @@ class Evaluation extends Component {
      let iaUrl = this.state.url + '/newIAForm';
        axios.get(iaUrl)
            .then(res => {
-             console.log('response from server', res.data);
+             console.log('response from server IA data', res.data);
                this.setState({ data: res.data });
            })
    }
@@ -80,8 +80,10 @@ class Evaluation extends Component {
 
   handleUpdate(e, id, record) {
     e.preventDefault();
-    const {detailsData, candidate, experience, expertiseData, impression, summaryData} = this.state;
+
+    const {detailsData, candidate, experience, expertiseData, impression, summaryData, data} = this.state;
     const fullname = candidate.firstname + " " + candidate.lastname;
+    const IAdata = data[this.props.index];
     const updatedrecord = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData})
 
     let iaUrl = this.props.url + '/newIAForm';
