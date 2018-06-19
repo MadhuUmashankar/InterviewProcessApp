@@ -17,7 +17,12 @@ export default class CandidateForm extends React.Component{
             candidate: props.candidate,
             modalEditView: false,
             selectedFile : null,
-            selectedFile_name : ''
+            selectedFile_name : '',
+            candStatus :  'Yet to be Interviewed',
+            fields: {},
+            errors: {},
+            errors1: {},
+            data : props.data
         };
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -55,21 +60,95 @@ export default class CandidateForm extends React.Component{
                 candidate["skills"] = value;
                 this.setState({skills : value})
                 break;
+            case "resume":
+                 candidate["selectedFile"] = event.target.files[0];
+                 candidate["selectedFile_name"] = event.target.files[0].name;
+                 event.preventDefault();
+                 this.setState({
+                        selectedFile : event.target.files[0],
+                        selectedFile_name : event.target.files[0].name
+                      })
+                break;
 
             default:
                 break;
         }
     }
 
+    handleValidation(){
+            const {candidate} = this.state;
+            let errors = {};
+            let formIsValid = true;
+
+            //Name
+
+            if(typeof candidate["firstname"] !== "undefined"){
+                 if(!candidate["firstname"].match(/^[a-zA-Z]+$/)){
+                     formIsValid = false;
+                     errors["firstname"] = "Please enter the valid firstname. eg. John";
+                 }
+            }
+
+            if(typeof candidate["lastname"] !== "undefined"){
+                if(!candidate["lastname"].match(/^[a-zA-Z ]+$/)){
+                    formIsValid = false;
+                    errors["lastname"] = "Please enter the valid lastname. eg. Woods";
+                }
+           }
+
+           if(typeof candidate["city"] !== "undefined"){
+               if(!candidate["city"].match(/^[a-zA-Z ]+$/)){
+                formIsValid = false;
+                errors["city"] = "Please enter the valid cityname. eg. Bangalore";
+            }
+            }
+
+            if(typeof candidate["skills"] !== "undefined"){
+                if(!candidate["skills"].match(/^[A-Za-z]{1}[a-zA-Z0-9- ]+$/)){
+                    formIsValid = false;
+                    errors["skills"] = "Please enter the valid skills. eg. Java or Angular2";
+                }
+           }
+
+            if(typeof candidate["email"] !== "undefined"){
+              let arr = this.state.data;
+              let obj = arr.find(o => o.email === this.state.email);
+              console.log("Inside validation email")
+              if(obj) {
+                  console.log("Inside if");
+                  formIsValid = false;
+                  errors["email"] = "Email entered already exists,Please choose another emailid";
+              }
+          }
+
+           if(typeof candidate["phone"] !== "undefined"){
+           // if(!candidate["phone"].match(/^[0-9]+$/)){   [7-9]{1}[0-9]{9}
+            if(!candidate["phone"].match(/[7-9]{1}[0-9]{9}/)){
+                formIsValid = false;
+                errors["phone"] = "Please enter the valid phone number.";
+            }
+            else if(candidate["phone"].length < 10 || candidate["phone"].length > 10){
+                formIsValid = false;
+                errors["phone"] = "Please enter the valid phone number of 10 digits.";
+            }
+       }
+            this.setState({errors: errors});
+            return formIsValid;
+        }
+
     handleSubmit(e) {
         e.preventDefault();
          const {firstname, lastname, skills, email, phone, city,selectedFile_name,selectedFile} = this.state;
         const {onHandleSubmit} = this.props;
-
-        if (!firstname || !lastname || !skills || !email || !phone || !city || !selectedFile_name || !selectedFile) {
+          let formIsValid = true;
+        if (!formIsValid) {
             return;
         }
-        onHandleSubmit({ firstname, lastname, skills, email, phone, city,selectedFile_name,selectedFile});
+        if(this.handleValidation()){
+            //alert("Form submitted");
+            onHandleSubmit({ firstname, lastname, skills, email, phone, city, selectedFile_name, selectedFile, candStatus : 'Yet to be Interviewed'});
+         }
+        // onHandleSubmit({ firstname, lastname, skills, email, phone, city,selectedFile_name,selectedFile});
     }
 
     handleEditView(modalEditView) {
@@ -81,6 +160,9 @@ export default class CandidateForm extends React.Component{
         e.preventDefault();
         const {handleUpdate} = this.props;
         handleUpdate(candidateId, candidate);
+        if(this.handleValidation()){
+            handleUpdate(candidateId, candidate);
+        }
     }
 
     upLoadFile(event){
@@ -107,6 +189,7 @@ export default class CandidateForm extends React.Component{
 
                                         {!modalLabelView &&
                                             <div>
+                                              <div>
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
                                             <InputBox
                                                 type="text"
@@ -118,6 +201,8 @@ export default class CandidateForm extends React.Component{
                                                 required
                                                 onChange = {this.handleOnChange}
                                             />
+                                          </div>
+                                          <span className="errors">{this.state.errors["firstname"]}</span>
                                             </div>
                                         }
                                         {modalLabelView &&
@@ -141,6 +226,7 @@ export default class CandidateForm extends React.Component{
 
                                         {!modalLabelView &&
                                             <div>
+                                              <div>
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-user"></i></span>
                                             <InputBox
                                                 type="text"
@@ -152,6 +238,9 @@ export default class CandidateForm extends React.Component{
                                                 onChange = {this.handleOnChange}
                                             />
                                             </div>
+
+                                           <span className="errors">{this.state.errors["lastname"]}</span>
+                                           </div>
                                         }
                                         {modalLabelView &&
                                             <div>
@@ -175,6 +264,7 @@ export default class CandidateForm extends React.Component{
 
                                         {!modalLabelView &&
                                             <div>
+                                               <div>
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-envelope"></i></span>
                                             <InputBox
                                                 type="email"
@@ -186,6 +276,8 @@ export default class CandidateForm extends React.Component{
                                                 onChange = {this.handleOnChange}
                                             />
                                             </div>
+                                            <span className="errors">{this.state.errors["email"]}</span>
+                                           </div>
                                         }
                                         {modalLabelView &&
                                             <div>
@@ -208,6 +300,7 @@ export default class CandidateForm extends React.Component{
 
                                         {!modalLabelView &&
                                             <div>
+                                              <div>
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-earphone"></i></span>
                                             <InputBox
                                                 type="tel"
@@ -218,6 +311,8 @@ export default class CandidateForm extends React.Component{
                                                 value = { modalEditView &&  candidate ? candidate.phone : this.state.phone}
                                                 onChange = {this.handleOnChange}
                                             />
+                                            </div>
+                                            <span className="errors">{this.state.errors["phone"]}</span>
                                             </div>
                                         }
                                         {modalLabelView &&
@@ -241,6 +336,7 @@ export default class CandidateForm extends React.Component{
 
                                         {!modalLabelView &&
                                             <div>
+                                              <div>
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-home"></i></span>
                                             <InputBox
                                                 type="text"
@@ -251,6 +347,8 @@ export default class CandidateForm extends React.Component{
                                                 required
                                                 onChange = {this.handleOnChange}
                                             />
+                                            </div>
+                                            <span className="errors">{this.state.errors["city"]}</span>
                                             </div>
                                         }
                                         {modalLabelView &&
@@ -273,6 +371,7 @@ export default class CandidateForm extends React.Component{
                                         <div className="input-group">
                                         {!modalLabelView &&
                                             <div>
+                                               <div>
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-home"></i></span>
                                             <InputBox
                                                 type="text"
@@ -283,6 +382,9 @@ export default class CandidateForm extends React.Component{
                                                 required
                                                 onChange = {this.handleOnChange}
                                             />
+                                            </div>
+
+                                             <span className="errors">{this.state.errors["skills"]}</span>
                                             </div>
                                         }
                                         {modalLabelView &&
@@ -323,7 +425,7 @@ export default class CandidateForm extends React.Component{
                                                 <div>
                                                     <span>:
                                                         <label>
-                                                            <a href="">Resume</a>
+                                                             {candidate.selectedFile_name}
                                                         </label>
                                                     </span>
 

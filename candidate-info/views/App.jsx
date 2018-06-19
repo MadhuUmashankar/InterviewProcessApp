@@ -74,7 +74,7 @@ class App extends Component {
         })
         axios.all([
             axios.delete(`${this.props.url}/${id}`),
-            axios.delete(`${this.props.IAurl}/${deleteIAFormID}`)                
+            axios.delete(`${this.props.IAurl}/${deleteIAFormID}`)
         ]).then(res => {
             console.log('Record deleted');
         })
@@ -117,7 +117,7 @@ class App extends Component {
     }
 
    render() {
-    const {data, searchKey, candidate, modalLabelView } = this.state;
+    const {data, searchKey, candidate, modalLabelView, IAData } = this.state;
     let url = this.props.url;
 
     return (
@@ -145,10 +145,10 @@ class App extends Component {
 
         <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Candidate Form</Modal.Title>
+                <Modal.Title><h3>Candidate Form</h3></Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <CandidateForm  onHandleSubmit={ this.handleSubmit } candidate={candidate} modalLabelView={modalLabelView} handleUpdate={ this.handleUpdate }/>
+                <CandidateForm  onHandleSubmit={ this.handleSubmit } candidate={candidate} modalLabelView={modalLabelView} handleUpdate={ this.handleUpdate }  data = {data}/>
             </Modal.Body>
         </Modal>
 
@@ -157,6 +157,7 @@ class App extends Component {
             onDelete={ this.handleDelete }
             onModalView={this.handleView }
             data={ data }
+            IAData={IAData}
             searchKey= { searchKey }
             url = {url}/>
       </div>

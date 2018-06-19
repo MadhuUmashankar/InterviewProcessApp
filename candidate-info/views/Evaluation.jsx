@@ -84,7 +84,6 @@ class Evaluation extends Component {
     const {detailsData, candidate, experience, expertiseData, impression, summaryData, data} = this.state;
     const fullname = candidate.firstname + " " + candidate.lastname;
     const updatedrecord = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData})
-
     let iaUrl = this.props.url + '/newIAForm';
     this.setState({ show: false });
 
@@ -102,6 +101,7 @@ class Evaluation extends Component {
     const {detailsData, candidate, experience, expertiseData, impression, summaryData} = this.state;
     // Candidate IA Form data
     const fullname = candidate.firstname + " " + candidate.lastname;
+
     const record = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData})
     this.setState({ show: false });
       if(record) {
@@ -119,7 +119,15 @@ class Evaluation extends Component {
   }
 
   render() {
-    let {candidate, url, data, index} = this.state;
+    let {candidate, url, data, index, experience, expertiseData, impression, overallAvgScore} = this.state;
+    let rows = expertiseData;
+    if(rows.length) {
+      overallAvgScore= (rows.filter(item => item.avgScore)).map(item => item.avgScore).reduce((prev, next, iv) => { return +prev + +next}, 0);
+      overallAvgScore = parseFloat(Number((overallAvgScore) / (rows.length || 1)).toFixed(2));
+    }
+    let total = ((0.1*experience) + (0.8*overallAvgScore) + (0.1*impression)) || 0;
+    let totalValue = parseFloat(Number(total).toFixed(2));
+
     return (
       <div>
         <Button bsStyle="primary" onClick={()=>{this.handleShow()}}>
@@ -140,7 +148,7 @@ class Evaluation extends Component {
                    <Note onNoteSave= {this.handleNoteData} candidate={candidate} data={data[index]} />
                   </div>
                   <div className="margin-small">
-                   <Expertise onExpertiseSave= {this.handleExpertiseData} candidate={candidate} data={data[index]} />
+                   <Expertise onExpertiseSave= {this.handleExpertiseData} candidate={candidate} data={data[index]} overallAvgScore={overallAvgScore} />
                   </div>
                   <div className="margin-small">
                     <Impression onImpressionSave= {this.handleImpressionSave} candidate={candidate} data={data[index]} />
@@ -148,21 +156,21 @@ class Evaluation extends Component {
 
                   <div className="margin-small">
                     <div className="col-sm-4 total">
-                      <label className="experience-label">Total: </label>
-                      <input type="number" />
+                      <label className="experience-label">Evaluator final Score</label>
+                      <label className="overallScore">{totalValue}</label>
                     </div>
 
                     <Summary onSummarySave= {this.handleSummaryData} candidate={candidate} data={data[index]} />
-                      </div>
+                  </div>
 
                     {
-                      data[index] && 
+                      data[index] &&
                       <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, data[index]._id, data)}}>Update</Button>
                     }
                     {
                       !data[index] && <Button className="move-right" type="submit">Save</Button>
                     }
-                    
+
                     <Button onClick={this.handleClose}>Close</Button>
 
             </form>

@@ -30,9 +30,10 @@ export default class CandidateInfoList extends Component {
 
 
     render() {
-        const {data, searchKey, url} = this.props;
+        const {data, searchKey, url, IAData} = this.props;
 
         let candidateNodes = data;
+        let dataFromIA = IAData;
 
         if(searchKey) {
             candidateNodes = data.filter((candidate, index) => {
@@ -48,23 +49,14 @@ export default class CandidateInfoList extends Component {
                 <div  key={index}>
                         <div className="candidate-colum panel">
                         <div className="form-group evaluation-status">
-                           <select className="form-control" id="experience">
-                             <option>Yet to be interviewed</option>
-                               <option>Rejected</option>
-                               <option>Selected</option>
-                               <option>On Hold</option>
-                               <option>Withdraw</option>
-                               <option>Move to Technical round 2</option>
-                               <option>Move to Manager round</option>
-                               <option>Move to HR round</option>
-                           </select>
+                           <label>{candidate.candStatus}</label>
                            <div className="date-status">
-                           <label>June 7, 2018</label>
+                             <label>{dataFromIA[index] ? dataFromIA[index].interviewDate : 'IA Date'}</label>
                            </div>
                         </div>
                             <div>
-                                <p>Name: {candidate.firstname} {candidate.lastname}</p>
-                                <p>Skills: {candidate.skills}</p>
+                                <h5>Name: {candidate.firstname} {candidate.lastname}</h5>
+                                <h5>Skills: {candidate.skills}</h5>
                             </div>
                             <div className="evaluation-wrapper" >
                                 <Evaluation candidate={candidate} url={url} index={index}/>

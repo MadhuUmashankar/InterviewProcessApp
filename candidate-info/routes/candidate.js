@@ -50,7 +50,7 @@ router.get('/candidateInfo/:id', function(req, res, next){
     });
 });
 
-//Save Candidate Resume 
+//Save Candidate Resume
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, './upload');
@@ -69,10 +69,10 @@ router.post('/candidateInfo/upload', upload.single('selectedFile'), (req, res) =
     res.send();
 })
 
- 
 
 
-// Delete IA form 
+
+// Delete IA form
 router.delete('/candidateInfo/newIAForm/:id', function(req, res, next){
     db.evaluationSheetInformationTables.remove({_id: mongojs.ObjectId(req.params.id)}, function(err, IAdata){
         if(err){
@@ -137,7 +137,15 @@ router.put('/candidateInfo/:id', function(req, res, next){
     if(candidate.city){
         updcandidateInfo.city = candidate.city;
     }
-
+    if(candidate.selectedFile_name){
+          updcandidateInfo.selectedFile_name = candidate.selectedFile_name;
+    }
+    if(candidate.selectedFile){
+        updcandidateInfo.selectedFile = candidate.selectedFile;
+    }
+    if(candidate.resume){
+        updcandidateInfo.resume = candidate.resume;
+    }
     if(!updcandidateInfo){
         res.status(400);
         res.json({
@@ -171,7 +179,7 @@ router.post('/candidateInfo/newIAForm', function(req, res, next){
 // Update IA Form
 router.put('/candidateInfo/newIAForm/:id', function(req, res, next){
     var evaluator = req.body;
-    let updatedIA = {};
+     let updatedIA = {};
 
     if(evaluator.interviewDate){
         updatedIA.interviewDate = evaluator.interviewDate;
@@ -191,8 +199,8 @@ router.put('/candidateInfo/newIAForm/:id', function(req, res, next){
     if(evaluator.summaryData){
         updatedIA.summaryData = evaluator.summaryData;
     }
- 
-    if(!updatedIA){
+
+    if(!Object.keys(updatedIA).length){
         res.status(400);
         res.json({
             "error":"Bad Data"

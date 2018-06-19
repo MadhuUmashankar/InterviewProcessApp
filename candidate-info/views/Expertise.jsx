@@ -8,9 +8,7 @@ class Expertise extends React.Component {
     this.state = {
         value: '',
         candidate: props.candidate,
-        IAdata: props.data || {},
-        testId:props.testId,
-        overallAvgScore: '0'
+        IAdata: props.data || {}
   };
   this.handleInputChange = this.handleInputChange.bind(this) ;
   this.handleAddRow = this.handleAddRow.bind(this);
@@ -18,11 +16,12 @@ class Expertise extends React.Component {
   this.onExpertiseSave = this.onExpertiseSave.bind(this);
 }
 
- handleInputChange(event, idx) {
+ handleInputChange(event, idx, overallAvgScore) {
    const {IAdata} = this.state;
   const { name, value } = event.target;
+
   let rows = Object.keys(IAdata).length > 0 ? [...IAdata.rows] : [{}];
-  rows[idx] = Object.assign({},rows[idx],{[name]:value}) ;
+  rows[idx] = Object.assign({}, rows[idx], {[name]:value}) ;
   this.setState({IAdata:{rows:rows}}, ()=> {
       this.onExpertiseSave(rows);
   });
@@ -46,39 +45,42 @@ class Expertise extends React.Component {
 
   onExpertiseSave(rows) {
     const {onExpertiseSave} = this.props;
-    const {overallAvgScore} = this.state;
+    // const {overallAvgScore} = this.state;
     if (!rows) {return;}
-    onExpertiseSave(rows, overallAvgScore);
+    onExpertiseSave(rows);
   }
 
   componentDidMount() {
     const { data, onExpertiseSave } = this.props;
+    // const {overallAvgScore} = this.state;
       if (data != undefined) {
         if(Object.keys(data).length > 0) {
         this.setState({IAdata:{rows: data.rows}},() => {
           onExpertiseSave(data.rows)
         });
-      } 
+      }
     }
   }
 
   render(){
-    let {candidate, testId, IAdata, overallAvgScore } = this.state;
+    let {candidate, IAdata} = this.state;
     let rows = Object.keys(IAdata).length > 0 ? IAdata.rows : [{}];
-    if(rows.length) {
-      overallAvgScore=(rows.filter(item => item.avgScore)).map(item => item.avgScore).reduce((prev, next, iv) => { return +prev + +next}, 0);
-      overallAvgScore = Math.round(overallAvgScore/(rows.length || 1))
-    }
+    // console.log('this.props', this.props)
+    // if(rows.length) {
+    //   overallAvgScore= (rows.filter(item => item.avgScore)).map(item => item.avgScore).reduce((prev, next, iv) => { return +prev + +next}, 0);
+    //   overallAvgScore = Math.round(overallAvgScore/(rows.length || 1));
+    //   console.log('overallAvgScore', overallAvgScore)
+    // }
 
     return (
       <div>
         <div className="container-fluid border">
-          <div className="row clearfix header">
+          <div className="clearfix">
           <div className="col-sm-5"><label className="experience-label">Technical Interview: 80%</label></div>
 
-                  <div className="col-sm-6">
+                  <div className="col-sm-4 move-right">
                       <label className="experience-label">Calculated Score</label>
-                      <label className="overallScore">{overallAvgScore}</label>
+                      <label className="overallScore">{this.props.overallAvgScore}</label>
                   </div>
             </div>
             <div>
@@ -108,7 +110,7 @@ class Expertise extends React.Component {
                             autoFocus="true"
                             maxLength="10"
                             required
-                            onChange = {(e)=>this.handleInputChange(e,idx)}
+                            onChange = {(e)=>this.handleInputChange(e, idx)}
                         />
                         </td>
 
@@ -121,7 +123,7 @@ class Expertise extends React.Component {
                                 value={item.juniorMinimumScore}
                                 min="1"
                                 max="10"
-                                onChange = {(e)=>this.handleInputChange(e,idx)}
+                                onChange = {(e)=>this.handleInputChange(e, idx)}
                             />
                         </td>
                             <td>
@@ -131,7 +133,7 @@ class Expertise extends React.Component {
                                 name="midMinimumScore"
                                 id="midMinimumScoreId"
                                 value={item.midMinimumScore}
-                                onChange = {(e)=>this.handleInputChange(e,idx)}
+                                onChange = {(e)=>this.handleInputChange(e, idx)}
                             />
 
                         </td>
@@ -142,7 +144,7 @@ class Expertise extends React.Component {
                                 name="seniorMinimumScore"
                                 id="seniorMinimumScoreId"
                                 value={item.seniorMinimumScore}
-                                onChange = {(e)=>this.handleInputChange(e,idx)}
+                                onChange = {(e)=>this.handleInputChange(e, idx)}
                             />
 
                             </td>
@@ -153,7 +155,7 @@ class Expertise extends React.Component {
                                   name="avgScore"
                                   id="avgScoreId"
                                   value={item.avgScore}
-                                  onChange = {(e)=>this.handleInputChange(e,idx)}
+                                  onChange = {(e)=>this.handleInputChange(e, idx)}
                               />
                             </td>
 
