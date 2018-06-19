@@ -72,7 +72,7 @@ class Summary extends React.Component {
 
     return (
       <div className="container-fluid border">
-        <div className="row header">
+        <div className="row header-margin">
           <div className="col-sm-12"><label className="experience-label">General impression - to be filled up by the interviewer</label></div>
         </div>
 

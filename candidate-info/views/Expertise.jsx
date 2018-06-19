@@ -75,7 +75,7 @@ class Expertise extends React.Component {
     return (
       <div>
         <div className="container-fluid border">
-          <div className="clearfix">
+          <div className="clearfix header-margin">
           <div className="col-sm-5"><label className="experience-label">Technical Interview: 80%</label></div>
 
                   <div className="col-sm-4 move-right">

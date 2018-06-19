@@ -153,9 +153,9 @@ class Evaluation extends Component {
                   <div className="margin-small">
                     <Impression onImpressionSave= {this.handleImpressionSave} candidate={candidate} data={data[index]} />
                   </div>
-
+                  
                   <div className="margin-small">
-                    <div className="col-sm-4 total">
+                    <div className="col-sm-4 header-margin">
                       <label className="experience-label">Evaluator final Score</label>
                       <label className="overallScore">{totalValue}</label>
                     </div>

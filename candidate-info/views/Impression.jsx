@@ -34,7 +34,7 @@ class Impression extends React.Component {
 
     return(
       <div className="container-fluid border">
-        <div className="clearfix">
+        <div className="clearfix header-margin">
           <div className="col-sm-6"><label className="experience-label">Evaluator impression: 10%</label></div>
           <div className="col-sm-2 move-right">
               <div className="form-group">
