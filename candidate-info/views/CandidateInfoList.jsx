@@ -9,8 +9,13 @@ export default class CandidateInfoList extends Component {
     }
 
     handleDelete(e, candidateID) {
-        const {onDelete} = this.props;
-        onDelete(candidateID);
+        if (confirm("Are you sure you want to delete this Candidate?")) {
+          const {onDelete} = this.props;
+          onDelete(candidateID);
+        } else {
+          false;
+        }
+
     }
 
     handleUpdate(e, candidateID, candidate) {
@@ -44,6 +49,7 @@ export default class CandidateInfoList extends Component {
 
 
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
+          // console.log('toDateString()', dataFromIA[index])
             const candidateID = candidate._id;
             return (
                 <div  key={index}>
@@ -63,8 +69,8 @@ export default class CandidateInfoList extends Component {
                                 <div className="file"><a href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>
                             </div>
                               <div>
-                                <button className="btn-view" onClick={(e)=>this.handleView(e, candidate)}>View</button>
-                                <button className="btn-delete" onClick={(e)=>this.handleDelete(e, candidateID,candidate)}>delete</button>
+                                <button className="btn margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
+                                <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID,candidate)}>Delete</button>
                             </div>
                             {/* <div>
                                 <button className="btn-evaluate btn btn-lg btn-primary"  onClick={this.handleEvalution}>Start Evalution Process</button>

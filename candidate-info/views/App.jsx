@@ -136,7 +136,7 @@ class App extends Component {
             <label className="control-label">Candidate Search:</label>
             <InputBox
                 type="text"
-                placeholder="Search..."
+                placeholder="Search by Name/Skills"
                 classname="form-control"
                 onChange={this.handleSearch}
             />

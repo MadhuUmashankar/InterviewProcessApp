@@ -139,42 +139,43 @@ class Evaluation extends Component {
           <h2 className="ia-form-title">Candidate Evaluation Form</h2>
           </Modal.Header>
           <Modal.Body>
-
-            <form  onSubmit= {this.handleSubmitIAForm}>
-                  <div className="margin-small">
-                    <Details onDetailsSave= {this.handleDetailsData} candidate={candidate} data={data[index]} />
-                  </div>
-                  <div className="margin-small">
-                   <Note onNoteSave= {this.handleNoteData} candidate={candidate} data={data[index]} />
-                  </div>
-                  <div className="margin-small">
-                   <Expertise onExpertiseSave= {this.handleExpertiseData} candidate={candidate} data={data[index]} overallAvgScore={overallAvgScore} />
-                  </div>
-                  <div className="margin-small">
-                    <Impression onImpressionSave= {this.handleImpressionSave} candidate={candidate} data={data[index]} />
-                  </div>
-                  
-                  <div className="margin-small">
-                    <div className="col-sm-4 header-margin">
-                      <label className="experience-label">Evaluator final Score</label>
-                      <label className="overallScore">{totalValue}</label>
+            <div className="form-container">
+              <form className="form-horizontal" onSubmit= {this.handleSubmitIAForm}>
+                <fieldset className = "background">
+                    <div className="margin-small">
+                      <Details onDetailsSave= {this.handleDetailsData} candidate={candidate} data={data[index]} />
+                    </div>
+                    <div className="margin-small">
+                     <Note onNoteSave= {this.handleNoteData} candidate={candidate} data={data[index]} />
+                    </div>
+                    <div className="margin-small">
+                     <Expertise onExpertiseSave= {this.handleExpertiseData} candidate={candidate} data={data[index]} overallAvgScore={overallAvgScore} />
+                    </div>
+                    <div className="margin-small">
+                      <Impression onImpressionSave= {this.handleImpressionSave} candidate={candidate} data={data[index]} />
                     </div>
 
-                    <Summary onSummarySave= {this.handleSummaryData} candidate={candidate} data={data[index]} />
-                  </div>
+                    <div className="margin-small">
+                      <div className="col-sm-4 header-margin">
+                        <label className="experience-label">Evaluator final Score</label>
+                        <label className="overallScore">{totalValue}</label>
+                      </div>
 
-                    {
-                      data[index] &&
-                      <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, data[index]._id, data)}}>Update</Button>
-                    }
-                    {
-                      !data[index] && <Button className="move-right" type="submit">Save</Button>
-                    }
+                      <Summary onSummarySave= {this.handleSummaryData} candidate={candidate} data={data[index]} />
+                    </div>
 
-                    <Button onClick={this.handleClose}>Close</Button>
+                      {
+                        data[index] &&
+                        <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, data[index]._id, data)}}>Update</Button>
+                      }
+                      {
+                        !data[index] && <Button className="move-right" type="submit">Save</Button>
+                      }
 
-            </form>
-
+                      <Button onClick={this.handleClose}>Close</Button>
+                      </fieldset>
+              </form>
+            </div>
           </Modal.Body>
 
 
