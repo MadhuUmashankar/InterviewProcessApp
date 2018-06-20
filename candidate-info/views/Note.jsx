@@ -39,7 +39,7 @@ class Note extends React.Component {
     return(
       <div className="container-fluid border">
         <div className="row header-margin">
-          <div className="col-sm-6"><label className="experience-label">Experience: 10%</label></div>
+          <div className="col-sm-3"><label className="experience-label">Experience: 10%</label><span className="mandatory">*</span></div>
           <div className="col-sm-2 move-right">
               <div className="form-group">
                  <select className="form-control" id="experience" onChange={this.handleOnChange}

@@ -91,8 +91,14 @@ class App extends Component {
 
     handleUpdate(id, record) {
         this.setState({ show: false });
+        let formData = new FormData();
+      formData.append('selectedFile', record.selectedFile);
           //sends the new candidate id and new candidate to our api
-        axios.put(`${this.props.url}/${id}`, record)
+          axios.all([
+                          axios.post(this.props.url+'/upload', formData),
+                         axios.put(`${this.props.url}/${id}`, record),
+                  ])
+        //axios.put(`${this.props.url}/${id}`, record)
             .catch(err => {
                 console.log(err);
             })

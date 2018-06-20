@@ -199,6 +199,9 @@ router.put('/candidateInfo/newIAForm/:id', function(req, res, next){
     if(evaluator.summaryData){
         updatedIA.summaryData = evaluator.summaryData;
     }
+    if(evaluator.interviewStatus){
+        updatedIA.interviewStatus = evaluator.interviewStatus;
+    }
 
     if(!Object.keys(updatedIA).length){
         res.status(400);

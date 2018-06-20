@@ -5,6 +5,7 @@ import Note from './Note';
 import Expertise from './Expertise';
 import Impression from './Impression';
 import Summary from './Summary';
+import EvaluationStatus from './EvaluationStatus';
 import { Modal,Button } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -20,6 +21,7 @@ class Evaluation extends Component {
        expertiseData: {},
        impression:{},
        summaryData:{},
+       interviewStatus:{},
        candidate:props.candidate,
        url: props.url,
        index:props.index
@@ -34,6 +36,7 @@ class Evaluation extends Component {
     this.handleImpressionSave = this.handleImpressionSave.bind(this);
     this.handleExpertiseData = this.handleExpertiseData.bind(this);
     this.handleSummaryData = this.handleSummaryData.bind(this);
+    this.handleEvaluationStatusSave = this.handleEvaluationStatusSave.bind(this);
    }
 
    loadDetailsFromServerForIASheet() {
@@ -77,13 +80,16 @@ class Evaluation extends Component {
   handleSummaryData(summary) {
     this.setState({summaryData: summary});
   }
+  handleEvaluationStatusSave(estatus) {
+    this.setState({interviewStatus: estatus})
+  }
 
   handleUpdate(e, id, record) {
     e.preventDefault();
 
-    const {detailsData, candidate, experience, expertiseData, impression, summaryData, data} = this.state;
+    const {detailsData, candidate, experience, expertiseData, impression, summaryData, data, interviewStatus} = this.state;
     const fullname = candidate.firstname + " " + candidate.lastname;
-    const updatedrecord = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData})
+    const updatedrecord = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     let iaUrl = this.props.url + '/newIAForm';
     this.setState({ show: false });
 
@@ -98,11 +104,11 @@ class Evaluation extends Component {
 
   handleSubmitIAForm(e) {
     e.preventDefault();
-    const {detailsData, candidate, experience, expertiseData, impression, summaryData} = this.state;
+    const {detailsData, candidate, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     // Candidate IA Form data
     const fullname = candidate.firstname + " " + candidate.lastname;
 
-    const record = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData})
+    const record = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     this.setState({ show: false });
       if(record) {
           let records = this.state.data;
@@ -157,11 +163,14 @@ class Evaluation extends Component {
 
                     <div className="margin-small">
                       <div className="col-sm-4 header-margin">
-                        <label className="experience-label">Evaluator final Score</label>
+                        <label className="experience-label">Evaluator Final Score</label>
                         <label className="overallScore">{totalValue}</label>
                       </div>
 
                       <Summary onSummarySave= {this.handleSummaryData} candidate={candidate} data={data[index]} />
+                    </div>
+                    <div className="margin-small">
+                      <EvaluationStatus onEvaluationStatusSave= {this.handleEvaluationStatusSave} candidate={candidate} data={data[index]} />
                     </div>
 
                       {

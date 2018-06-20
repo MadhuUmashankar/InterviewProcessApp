@@ -28,7 +28,7 @@ export default class CandidateForm extends React.Component{
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleEditView = this.handleEditView.bind(this);
-        this.upLoadFile = this.upLoadFile.bind(this);
+      //  this.upLoadFile = this.upLoadFile.bind(this);
     }
 
     handleOnChange(event) {
@@ -159,20 +159,20 @@ export default class CandidateForm extends React.Component{
     handleUpdate(e, candidateId,candidate) {
         e.preventDefault();
         const {handleUpdate} = this.props;
-        handleUpdate(candidateId, candidate);
+        //handleUpdate(candidateId, candidate);
         if(this.handleValidation()){
             handleUpdate(candidateId, candidate);
         }
     }
 
-    upLoadFile(event){
+  /*  upLoadFile(event){
         event.preventDefault();
          this.setState({
             selectedFile : event.target.files[0],
             selectedFile_name : event.target.files[0].name
          })
         }
-
+*/
 
     render(){
         const { candidate } = this.state;
@@ -372,7 +372,7 @@ export default class CandidateForm extends React.Component{
                                         {!modalLabelView &&
                                             <div>
                                                <div>
-                                            <span className="input-group-addon"><i className="glyphicon glyphicon-home"></i></span>
+
                                             <InputBox
                                                 type="text"
                                                 placeholder="key skills"
@@ -409,7 +409,11 @@ export default class CandidateForm extends React.Component{
                                     <label className="col-md-4 control-label">Upload Resume</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
-                                            <input type="file" className="form-control-file" id="exampleFormControlFile1" onChange = {this.upLoadFile}/>
+                                            <input type="file"
+                                              className="form-control-file"
+                                              id="exampleFormControlFile1"
+                                              name = "resume"
+                                              onChange = {this.handleOnChange}/>
                                         </div>
                                     </div>
                                 </div>

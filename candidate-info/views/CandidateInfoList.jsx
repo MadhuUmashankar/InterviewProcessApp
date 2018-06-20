@@ -9,7 +9,7 @@ export default class CandidateInfoList extends Component {
     }
 
     handleDelete(e, candidateID) {
-        if (confirm("Are you sure you want to delete this Candidate?")) {
+        if (confirm("You are about to delete this Candidate?")) {
           const {onDelete} = this.props;
           onDelete(candidateID);
         } else {
@@ -33,7 +33,6 @@ export default class CandidateInfoList extends Component {
         window.location.href = "/CandidateAcessment";
     }
 
-
     render() {
         const {data, searchKey, url, IAData} = this.props;
 
@@ -49,15 +48,16 @@ export default class CandidateInfoList extends Component {
 
 
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
-          // console.log('toDateString()', dataFromIA[index])
+          console.log(' dataFromIA[index]', dataFromIA[index])
             const candidateID = candidate._id;
             return (
                 <div  key={index}>
                         <div className="candidate-colum panel">
-                        <div className="form-group evaluation-status">
-                           <label>{candidate.candStatus}</label>
-                           <div className="date-status">
-                             <label>{dataFromIA[index] ? dataFromIA[index].interviewDate : 'IA Date'}</label>
+                          <div className= "evaluation-status date-status">
+                        <div className="">
+                           <label>{dataFromIA[index] ? dataFromIA[index].interviewStatus : 'Status'}</label></div>
+                           <div className="">
+                             <label>{dataFromIA[index] ? dataFromIA[index].interviewDate : 'Date'}</label>
                            </div>
                         </div>
                             <div>
@@ -66,7 +66,7 @@ export default class CandidateInfoList extends Component {
                             </div>
                             <div className="evaluation-wrapper" >
                                 <Evaluation candidate={candidate} url={url} index={index}/>
-                                <div className="file"><a href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>
+                                <div className="file"><a target="_blank" href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>
                             </div>
                               <div>
                                 <button className="btn margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>

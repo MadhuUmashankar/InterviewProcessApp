@@ -73,7 +73,7 @@ class Summary extends React.Component {
     return (
       <div className="container-fluid border">
         <div className="row header-margin">
-          <div className="col-sm-12"><label className="experience-label">General impression - to be filled up by the interviewer</label></div>
+          <div className="col-sm-12"><label>General impression - to be filled up by the interviewer</label><span className="mandatory">*</span></div>
         </div>
 
         <div className="row interview-comments">
@@ -93,7 +93,7 @@ class Summary extends React.Component {
         <div className="row">
           <div className="col-sm-4">Technical level</div>
           <div className="col-sm-8"><div className="form-group experience-width">
-             <select required className="form-control" id="experience" onChange = {this.handleOnChange} name="technicalLevel"
+             <select required className="form-control" onChange = {this.handleOnChange} name="technicalLevel"
              id="technicalLevelId" value ={technicalLevel}>
                <option>Select</option>
                  <option>Junior 1</option>
@@ -119,7 +119,7 @@ class Summary extends React.Component {
           </div>
         </div>
       </div>
-    )
+      )
   }
 }
 
